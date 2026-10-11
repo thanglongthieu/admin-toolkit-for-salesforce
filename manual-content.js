@@ -631,6 +631,25 @@ Monitoring ページは Salesforce から設定情報と利用状況を直接読
 
 const VERSION_FILES_EN = [
   {
+    name: "v0.11.0.md",
+    path: "versions/v0.11.0.md",
+    title: "0.11.0",
+    content: `# 0.11.0
+
+Released: 2026-10-11
+
+## Removed
+
+- Org Review, Winter '27 Release Note Review and Transaction Timeline are no longer part of the extension. The popup now opens five apps: DataDock for Salesforce, Org Differences, SheetD, Object Schema and Permission Explorer.
+- The local data those pages kept (Org Review baselines and cleanup tasks, Winter '27 review decisions, recent Transaction Timeline requests) is no longer read; removing or reinstalling the extension clears it.
+
+## Changed
+
+- Admin Toolkit for Salesforce is now open source under the MIT license: https://github.com/thanglongthieu/admin-toolkit-for-salesforce
+- No browser permission, host permission, telemetry, analytics, remote code, or developer-operated backend was added in this release.
+`
+  },
+  {
     name: "v0.10.0.md",
     path: "versions/v0.10.0.md",
     title: "0.10.0",
@@ -888,6 +907,25 @@ Released: 2026-06-29
 ];
 
 const VERSION_FILES_JP = [
+  {
+    name: "v0.11.0.md",
+    path: "versions/v0.11.0.md",
+    title: "0.11.0",
+    content: `# 0.11.0
+
+リリース日: 2026-10-11
+
+## 削除
+
+- 組織レビュー、Winter '27 リリースノートレビュー、Transaction Timeline を拡張機能から削除しました。ポップアップから開くアプリは DataDock for Salesforce、組織間の差分、SheetD、Object Schema、Permission Explorer の 5 つです。
+- これらのページが保存していたローカルデータ（組織レビューのベースラインとクリーンアップタスク、Winter '27 のレビュー記録、Transaction Timeline の最近のリクエスト）は読み込まれなくなりました。拡張機能を削除または再インストールすると消去されます。
+
+## 変更
+
+- Admin Toolkit for Salesforce を MIT ライセンスのオープンソースとして公開しました: https://github.com/thanglongthieu/admin-toolkit-for-salesforce
+- 本リリースでは、ブラウザー権限、ホスト権限、テレメトリー、分析、リモートコード、開発者が運用するバックエンドの追加はありません。
+`
+  },
   {
     name: "v0.10.0.md",
     path: "versions/v0.10.0.md",
