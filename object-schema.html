@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="icon-32.png">
+    <title>Schema Objects</title>
+    <link rel="stylesheet" href="shared.css">
+  </head>
+  <body>
+    <main class="shell schema-shell app-session-shell object-schema-shell">
+      <div class="card">
+        <section class="hero app-session-header object-schema-header">
+          <h1 class="eyebrow app-session-page-title object-schema-page-title"><svg class="app-session-header-icon object-schema-header-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 3h6a2 2 0 0 1 2 2v2h3a2 2 0 1 1 0 2h-3v6h3a2 2 0 1 1 0 2h-3v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 2v14h6V5H4Zm13 0h3a2 2 0 1 1 0 4h-3a2 2 0 1 1 0-4Zm0 8h3a2 2 0 1 1 0 4h-3a2 2 0 1 1 0-4Z"/></svg><span data-i18n="objectSchema.headerTitle">Schema Objects</span></h1>
+          <div id="object-schema-session-status" class="status" aria-live="polite">Waiting for Salesforce session...</div>
+        </section>
+
+        <section class="section schema-map-panel">
+          <div class="schema-map-controls">
+            <label class="schema-map-control-field schema-map-namespace-control">
+              <span data-i18n="objectSchema.namespaces.label">Packaged Objects</span>
+              <details id="schema-map-namespaces" class="schema-map-namespace-filter">
+                <summary data-i18n="objectSchema.namespaces.allShort">All namespaces</summary>
+                <div class="schema-map-namespace-filter-menu"></div>
+              </details>
+            </label>
+            <label class="schema-map-control-field"><span data-i18n="objectSchema.showAllStandard">Show all standard objects</span><span class="schema-map-checkbox-control"><input id="schema-map-show-all-standard" type="checkbox"><span data-i18n="objectSchema.showAllStandard.help">Include uncommon standard objects</span></span></label>
+            <label class="schema-map-control-field schema-map-object-input-label"><span data-i18n="objectSchema.objectName">Object Name</span><span class="schema-map-object-input-wrap"><input id="schema-map-object" value="Contact" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="schema-map-object-suggestions" aria-label="Salesforce object API name" data-i18n-aria-label="objectSchema.objectName.aria"><span id="schema-map-object-suggestions" class="schema-map-object-suggestions" role="listbox" hidden></span></span></label>
+            <label class="schema-map-control-field"><span data-i18n="objectSchema.parentDepth">Parent Object Depth</span><input id="schema-map-parent-levels" type="number" min="0" max="5" value="1"></label>
+            <label class="schema-map-control-field"><span data-i18n="objectSchema.childDepth">Child Object Depth</span><input id="schema-map-child-levels" type="number" min="0" max="5" value="1"></label>
+            <div class="schema-map-control-actions">
+              <button type="button" id="schema-map-build" data-i18n="objectSchema.build">Build Schema View</button>
+              <button type="button" id="schema-map-reset" class="secondary" data-i18n="objectSchema.reset">Reset</button>
+            </div>
+          </div>
+
+          <div class="schema-map-summary-row" hidden>
+            <details id="schema-map-object-filter" class="schema-map-object-filter" hidden>
+              <summary>Visible objects: All</summary>
+              <div class="schema-map-object-filter-menu"></div>
+            </details>
+            <div class="schema-map-status status" aria-live="polite"></div>
+          </div>
+          <div class="schema-map-view-controls" hidden>
+            <input id="schema-map-search" type="search" placeholder="Find object on map" aria-label="Find object on map" data-i18n-placeholder="objectSchema.find" data-i18n-aria-label="objectSchema.find">
+            <button type="button" id="schema-map-fit" class="secondary" data-i18n="objectSchema.actualSize">Actual size</button>
+            <button type="button" id="schema-map-zoom-out" class="secondary" aria-label="Zoom Out" data-i18n="objectSchema.zoomOut" data-i18n-aria-label="objectSchema.zoomOut">Zoom Out</button>
+            <output id="schema-map-zoom-level" aria-live="polite">100%</output>
+            <button type="button" id="schema-map-zoom-in" class="secondary" aria-label="Zoom In" data-i18n="objectSchema.zoomIn" data-i18n-aria-label="objectSchema.zoomIn">Zoom In</button>
+            <label class="schema-map-layout-label"><span data-i18n="objectSchema.layout">Layout</span>
+              <select id="schema-map-layout" aria-label="Layout" data-i18n-aria-label="objectSchema.layout">
+                <option value="horizontal" data-i18n="objectSchema.layout.horizontal">Horizontal</option>
+                <option value="vertical" data-i18n="objectSchema.layout.vertical">Vertical</option>
+              </select>
+            </label>
+            <button type="button" id="schema-map-expand" class="secondary" data-i18n="objectSchema.expandAll">Expand all</button>
+            <button type="button" id="schema-map-reset-view" class="secondary" data-i18n="objectSchema.resetView">Reset view</button>
+          </div>
+          <div class="schema-map-viewport is-fit"></div>
+          <div class="schema-map-mobile-tree"></div>
+          <aside class="schema-map-detail" hidden></aside>
+          <details class="schema-map-alternative" hidden>
+            <summary data-i18n="objectSchema.relationshipList">Relationship table (accessible view)</summary>
+            <div class="schema-map-alternative-body"></div>
+          </details>
+          <section id="schema-map-fields" class="schema-map-fields">
+            <div class="schema-map-fields-head">
+              <div class="schema-map-fields-summary">
+                <h2 id="schema-map-fields-title" data-i18n="objectSchema.fields.title">Fields</h2>
+                <p id="schema-map-fields-meta"></p>
+              </div>
+              <div class="schema-map-fields-filters">
+                <label class="schema-map-fields-filter">
+                  <span data-i18n="objectSchema.fields.objectFilter">Object filter</span>
+                  <select id="schema-map-fields-object-filter" aria-label="Filter fields by object" data-i18n-aria-label="objectSchema.fields.objectFilter.aria" disabled></select>
+                </label>
+                <label class="schema-map-fields-filter">
+                  <span data-i18n="objectSchema.fields.search">Global search</span>
+                  <span class="schema-map-fields-search-wrap"><input id="schema-map-fields-search" type="text" placeholder="Search all field columns" aria-label="Search all field columns" data-i18n-placeholder="objectSchema.fields.search.placeholder" data-i18n-aria-label="objectSchema.fields.search.aria"><button type="button" id="schema-map-fields-search-clear" class="secondary schema-map-fields-icon-button" aria-label="Clear search" title="Clear search" data-i18n-aria-label="objectSchema.fields.search.clear" data-i18n-title="objectSchema.fields.search.clear" hidden>×</button><button type="button" id="schema-map-fields-search-button" class="secondary schema-map-fields-icon-button" aria-label="Search fields" title="Search fields" data-i18n-aria-label="objectSchema.fields.search.button" data-i18n-title="objectSchema.fields.search.button"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m21 19.6-5.3-5.3a7.5 7.5 0 1 0-1.4 1.4l5.3 5.3L21 19.6ZM5 10a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z"/></svg></button></span>
+                </label>
+                <button type="button" id="schema-map-fields-download" class="secondary schema-map-fields-download" data-i18n="objectSchema.fields.download" disabled>Download CSV</button>
+                <button type="button" id="schema-map-fields-fullscreen" class="secondary schema-map-fields-icon-button" aria-label="Full screen" title="Full screen" data-i18n-aria-label="objectSchema.fields.fullscreen" data-i18n-title="objectSchema.fields.fullscreen"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 4h6v2H6v4H4V4Zm10 0h6v6h-2V6h-4V4ZM4 14h2v4h4v2H4v-6Zm14 0h2v6h-6v-2h4v-4Z"/></svg></button>
+              </div>
+            </div>
+            <iframe id="schema-map-fields-sheet" class="schema-map-fields-sheet" src="object-schema-sheet.html" title="Schema fields spreadsheet" data-i18n-title="objectSchema.fields.sheet.aria"></iframe>
+            <div id="schema-map-fields-empty" class="schema-detail-empty schema-folder-table-empty" hidden></div>
+          </section>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="object-schema.js"></script>
+  </body>
+</html>

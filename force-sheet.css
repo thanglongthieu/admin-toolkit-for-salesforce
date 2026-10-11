@@ -1,0 +1,1977 @@
+@import url("app-launcher.css");
+
+*, *::before, *::after { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+/* ── Univer theme overrides ──
+   Align the Univer spreadsheet widget (toolbar, right-click menu, etc.)
+   with the app's Salesforce green colour scheme and font. */
+
+:root {
+  --univer-primary-50:  #e6f4ea;
+  --univer-primary-100: #ceead6;
+  --univer-primary-200: #a8d5b5;
+  --univer-primary-300: #7cbf8e;
+  --univer-primary-400: #4ca870;
+  --univer-primary-500: #188038;
+  --univer-primary-600: #137333;
+  --univer-primary-700: #0d5e29;
+  --univer-primary-800: #095021;
+  --univer-primary-900: #063d18;
+}
+
+/* Context menu, tooltips, and other Univer popups inherit body font */
+[class*="univer-"] {
+  font-family: "Salesforce Sans", "Segoe UI", Arial, sans-serif;
+
+}
+
+/* ── Univer popup animation fix ──
+   The bundle CSS defines enter/enter-active but omits enter-done.
+   When React's CSSTransition replaces those classes with enter-done,
+   animation-fill-mode:both is lost and the popup snaps back to its
+   off-screen fallback (top:-9999px). This rule holds the final frame. */
+.univer-popup-enter-done {
+  opacity: 1;
+  transform: scaleY(1);
+  transform-origin: 0 0;
+}
+
+
+/* ── Shell ── */
+
+.fs-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* ── Header ── */
+
+.fs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 0.75rem;
+  height: 2.5rem;
+  border-bottom: 1px solid #c7c8ca;
+  background: #f8f9fa;
+  flex-shrink: 0;
+}
+
+.fs-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.fs-header-icon {
+  width: 1rem;
+  height: 1rem;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Breadcrumb: Force Sheet › Workspace › Folder › file */
+.fs-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 0;
+  overflow: hidden;
+}
+.fs-crumb {
+  font-size: 0.78rem;
+  color: #3c4043;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 12rem;
+}
+.fs-crumb-root { font-weight: 700; color: #1f2328; flex-shrink: 0; }
+.fs-crumb-sep { color: #9aa0a6; flex-shrink: 0; font-size: 0.78rem; }
+.fs-breadcrumb .fs-crumb-current { color: #188038; font-weight: 600; }
+
+.fs-crumb-sf-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 20px;
+  flex: 0 0 30px;
+  border-radius: 10px;
+  background: #0d9dda;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.2px;
+  text-decoration: none;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+  position: relative;
+  isolation: isolate;
+}
+.fs-crumb-sf-link::before,
+.fs-crumb-sf-link::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  background: inherit;
+}
+.fs-crumb-sf-link::before {
+  width: 15px;
+  height: 15px;
+  left: 4px;
+  top: -3px;
+}
+.fs-crumb-sf-link::after {
+  width: 13px;
+  height: 13px;
+  right: 4px;
+  top: -1px;
+}
+.fs-crumb-sf-link:hover { background: #087fb4; }
+.fs-crumb-sf-link:focus-visible { outline: 2px solid #1a73e8; outline-offset: 2px; }
+
+.fs-crumb-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  flex: 0 0 auto;
+}
+
+.fs-crumb-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: #5f6368;
+  cursor: pointer;
+}
+.fs-crumb-action-btn:hover {
+  border-color: #dadce0;
+  background: #eef1f4;
+  color: #1f2328;
+}
+.fs-crumb-action-btn:focus-visible {
+  outline: 2px solid #188038;
+  outline-offset: 1px;
+}
+
+.fs-status {
+  font-size: 0.72rem;
+  color: #5f6368;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fs-status.error { color: #c5221f; }
+
+.fs-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* ── Read-only / inline-edit mode control (header) ── */
+/* Object browse action bar (picklist picker) */
+.fs-obj-actions { display: inline-flex; align-items: center; gap: 8px; }
+.fs-obj-picklist-wrap { display: inline-flex; align-items: center; gap: 6px; }
+.fs-obj-picklist-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #5f6368;
+  white-space: nowrap;
+}
+.fs-obj-picklist {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #202124;
+  background: #fff;
+  border: 1px solid #c4d3ec;
+  border-radius: 6px;
+  padding: 3px 6px;
+  max-width: 180px;
+  cursor: pointer;
+}
+.fs-obj-picklist:focus-visible { outline: 2px solid #1a73e8; outline-offset: 2px; }
+/* ── Floating stream controls (R7: controls bar removed) ── */
+
+.fs-stream-chip {
+  position: absolute;
+  bottom: 44px; /* above Univer's sheet-tab footer */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 45;
+  pointer-events: none;
+}
+.fs-stream-chip button { pointer-events: auto; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
+
+.fs-stop-btn {
+  min-height: 1.5rem;
+  padding: 0 0.6rem;
+  border: 1px solid #c5221f;
+  border-radius: 4px;
+  background: #fff;
+  color: #c5221f;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  animation: fs-pulse-border 1.4s ease-in-out infinite;
+}
+
+.fs-stop-btn:hover { background: #fce8e6; }
+
+@keyframes fs-pulse-border {
+  0%, 100% { border-color: #c5221f; }
+  50%       { border-color: #e8877e; }
+}
+
+.fs-resume-btn {
+  min-height: 1.5rem;
+  padding: 0 0.6rem;
+  border: 1px solid #188038;
+  border-radius: 4px;
+  background: #fff;
+  color: #188038;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.fs-resume-btn:hover { background: #e6f4ea; }
+
+/* Refresh button (bottom of the icon rail) */
+.fs-refresh-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #5f6368;
+  cursor: pointer;
+  transition: color 120ms ease, background 120ms ease;
+}
+
+.fs-refresh-nav-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.fs-refresh-nav-btn:hover { color: #188038; background: #f1f3f4; }
+.fs-refresh-nav-btn:disabled { opacity: 0.6; cursor: wait; }
+
+/* ── Content ── */
+
+.fs-content {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── WS3: in-grid loading pill (non-interactive) ── */
+
+.fs-loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 3.5rem;
+  pointer-events: none;
+  z-index: 40;
+}
+.fs-loading-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(32, 33, 36, 0.85);
+  color: #fff;
+  font-size: 0.76rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+.fs-loading-spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: fs-spin 0.8s linear infinite;
+}
+@keyframes fs-spin { to { transform: rotate(360deg); } }
+
+/* ── WS3: dismissible error banner ── */
+
+.fs-error-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border-top: 1px solid #f6c7c4;
+  background: #fce8e6;
+  color: #a50e0e;
+  font-size: 0.78rem;
+}
+.fs-error-banner-icon { flex-shrink: 0; font-size: 0.9rem; line-height: 1.3; }
+.fs-error-banner-text { flex: 1; min-width: 0; }
+.fs-error-message { font-weight: 600; word-break: break-word; }
+.fs-error-detail {
+  display: block;
+  margin-top: 3px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: rgba(197, 34, 31, 0.08);
+  color: #7a1512;
+  font-size: 0.72rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 5.5em;
+  overflow-y: auto;
+}
+.fs-error-banner-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.fs-error-retry-btn {
+  padding: 3px 10px;
+  border: 1px solid #c5221f;
+  border-radius: 12px;
+  background: #fff;
+  color: #c5221f;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.fs-error-retry-btn:hover { background: #c5221f; color: #fff; }
+.fs-error-dismiss-btn {
+  padding: 2px 6px;
+  border: none;
+  background: transparent;
+  color: #a50e0e;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.fs-error-dismiss-btn:hover { background: rgba(197, 34, 31, 0.12); }
+
+/* ── WS3: org chip in the controls bar ── */
+
+.fs-org-chip {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #e6f4ea;
+  color: #137333;
+  font-weight: 600;
+  font-size: 0.68rem;
+  white-space: nowrap;
+  max-width: none;
+}
+.fs-org-chip:not(.stale)::before { content: "✓ "; font-weight: 700; }
+.fs-org-chip.stale {
+  background: #fce8e6;
+  color: #c5221f;
+  font-weight: 600;
+}
+
+.schema-tree-icon.readonly { position: relative; }
+.schema-tree-icon.readonly::after {
+  content: "🔒";
+  position: absolute;
+  right: -6px;
+  bottom: -5px;
+  font-size: 7px;
+  line-height: 1;
+}
+
+/* Persistent connection indicator — always visible once connected, unlike the
+   transient status message which is overwritten by query/load progress. */
+.fs-connection {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #e6f4ea;
+  color: #188038;
+  font-size: 0.68rem;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.fs-connection::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #188038;
+  flex-shrink: 0;
+}
+
+/* Empty state */
+
+#fs-sheet-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+}
+
+.fs-sheet-empty-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  color: #5f6368;
+  text-align: center;
+  padding: 2rem;
+}
+
+.fs-sheet-empty-inner svg {
+  width: 2.5rem;
+  height: 2.5rem;
+  opacity: 0.35;
+}
+
+.fs-sheet-empty-inner p {
+  margin: 0;
+  font-size: 0.83rem;
+  line-height: 1.6;
+}
+
+/* Sheet container */
+
+#fs-sheet-container {
+  position: absolute;
+  inset: 0;
+}
+
+/* ── Icon activity rail (replaces the horizontal nav bar) ── */
+
+.fs-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 44px;
+  flex-shrink: 0;
+  padding: 6px 0;
+  gap: 4px;
+  border-right: 1px solid #e2e3e4;
+  background: #fff;
+}
+
+.fs-rail-spacer { flex: 1; }
+
+.fs-nav-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-left: 2px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: #5f6368;
+  cursor: pointer;
+  transition: color 120ms ease, background 120ms ease;
+}
+
+.fs-nav-tab svg { width: 17px; height: 17px; flex-shrink: 0; }
+.fs-nav-tab:hover { color: #3c4043; background: #f1f3f4; }
+.fs-nav-tab.active { color: #188038; background: #e6f4ea; }
+
+.fs-settings-nav-btn { color: #4f5965; }
+.fs-settings-nav-btn:hover { color: #188038; }
+
+/* ── Import sub-mode bar (inside left panel) ── */
+
+.fs-import-mode-bar {
+  display: flex;
+  align-items: stretch;
+  height: 2rem;
+  border-bottom: 1px solid #e2e3e4;
+  background: #fff;
+  flex-shrink: 0;
+  padding: 0 8px;
+  gap: 2px;
+}
+
+.fs-mode-tab {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 10px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: #5f6368;
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 120ms ease;
+  min-height: 0;
+}
+
+.fs-mode-tab:hover { color: #3c4043; }
+.fs-mode-tab.active { color: #188038; border-bottom-color: #188038; }
+
+/* ── Report bar ── */
+
+.fs-report-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 10px;
+  background: #f8f9fa;
+  flex-shrink: 0;
+}
+
+/* Upload target pulldown (R3, UX round 2) */
+.fs-upload-target {
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  background: #fff;
+  color: #3c4043;
+  font: inherit;
+  font-size: 0.76rem;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.fs-report-input {
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 13px;
+  color: #1f2328;
+  background: #fff;
+  outline: none;
+}
+
+.fs-report-input:focus { border-color: #188038; box-shadow: 0 0 0 2px rgba(24,128,56,0.18); }
+.fs-report-input:disabled { background: #f8f9fa; color: #80868b; }
+
+/* ── Upload bar ── */
+
+.fs-upload-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 10px;
+  background: #f8f9fa;
+  flex-shrink: 0;
+}
+.fs-upload-bar .fs-upload-target { width: 100%; }
+.fs-upload-bar .fs-soql-run-btn { width: 100%; justify-content: center; }
+
+.fs-upload-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px dashed #dadce0;
+  border-radius: 6px;
+  background: #fff;
+  color: #5f6368;
+  font-size: 12.5px;
+  cursor: pointer;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.fs-upload-label svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: #5f6368;
+}
+
+.fs-upload-label:hover { border-color: #188038; color: #188038; }
+.fs-upload-label:hover svg { color: #188038; }
+
+#fs-upload-filename {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── SOQL / Import bar ── */
+
+.fs-soql-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  background: #f8f9fa;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Each import row is full-width */
+.fs-import-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.fs-import-row-grow {
+  flex: 1;
+  min-height: 0;
+}
+
+.fs-import-row-grow .fs-soql-textarea-wrap {
+  height: 100%;
+}
+
+.fs-import-row-grow .fs-soql-input {
+  height: 100%;
+  min-height: 70px;
+  resize: vertical;
+}
+
+/* Shared full-width input style (replaces object/field inputs) */
+.fs-import-input {
+  height: 32px;
+  width: 100%;
+  padding: 0 10px;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12.5px;
+  color: #1f2328;
+  background: #fff;
+  outline: none;
+}
+
+.fs-import-input:focus { border-color: #188038; box-shadow: 0 0 0 2px rgba(24,128,56,.18); }
+.fs-import-input:disabled { background: #f8f9fa; color: #80868b; }
+
+
+.fs-soql-textarea-wrap {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+}
+
+/* ── Inline SOQL field suggestions ── */
+
+.fs-soql-field-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  margin-top: 2px;
+  max-height: 180px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+}
+
+.fs-soql-field-suggest-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 5px 10px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  color: #1f2328;
+  cursor: pointer;
+  gap: 8px;
+}
+
+.fs-soql-field-suggest-item:hover,
+.fs-soql-field-suggest-item.active { background: #e8f5e9; }
+
+.fs-suggest-name { flex-shrink: 0; }
+
+.fs-suggest-meta {
+  color: #5f6368;
+  font-size: 11px;
+  margin-left: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fs-soql-input {
+  width: 100%;
+  min-height: 70px;
+  resize: vertical;
+  padding: 7px 10px;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #1f2328;
+  outline: none;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.fs-soql-input:focus { border-color: #188038; box-shadow: 0 0 0 2px rgba(24,128,56,0.18); }
+.fs-soql-input:disabled { background: #f8f9fa; color: #80868b; }
+
+/* Run row (row 4): one full-width Run action */
+.fs-run-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+.fs-run-row .fs-soql-run-btn { width: 100%; justify-content: center; }
+.fs-soql-run-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid #188038;
+  border-radius: 6px;
+  background: #188038;
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.fs-soql-run-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+.fs-soql-run-btn:hover:not(:disabled) { background: #137333; border-color: #137333; }
+.fs-soql-run-btn:disabled { opacity: 0.5; cursor: default; }
+
+/* ── Modal ── */
+
+.fs-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 24px;
+  width: min(380px, calc(100vw - 32px));
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.22);
+  background: #fff;
+  z-index: 200;
+}
+
+.fs-modal::backdrop { background: rgba(0,0,0,.35); }
+
+.fs-modal-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #202124;
+  margin-bottom: 20px;
+  white-space: pre-line; /* honour \n line breaks in delete/confirm messages */
+}
+
+/* Update-confirmation detail list (row · Id · changed fields) */
+.fs-modal-wide { width: min(520px, calc(100vw - 32px)); }
+.fs-update-list {
+  max-height: 320px;
+  overflow-y: auto;
+  margin-bottom: 4px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+.fs-update-rec { padding: 8px 12px; border-bottom: 1px solid #eef0f2; font-size: 12px; }
+.fs-update-rec:last-child { border-bottom: none; }
+.fs-update-rec-head { font-weight: 600; color: #202124; margin-bottom: 4px; }
+.fs-update-rec-id { color: #5f6368; font-weight: 400; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.fs-update-change { color: #3c4043; padding-left: 10px; line-height: 1.6; word-break: break-word; }
+.fs-update-field { font-weight: 600; }
+.fs-update-before { color: #c5221f; }
+.fs-update-after { color: #188038; }
+.fs-update-arrow { color: #9aa0a6; }
+
+.fs-modal-field { margin-bottom: 16px; }
+
+.fs-modal-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #5f6368;
+  margin-bottom: 4px;
+}
+
+.fs-modal-input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  font-size: 13px;
+  outline: none;
+  color: #202124;
+  background: #fff;
+}
+
+.fs-modal-input:focus { border-color: #188038; box-shadow: 0 0 0 2px rgba(24,128,56,.2); }
+
+.fs-create-query-soql {
+  height: auto;
+  min-height: 112px;
+  padding: 8px 10px;
+  resize: vertical;
+  line-height: 1.45;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.fs-favorite-download-options {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.fs-favorite-download-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  color: #202124;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.fs-favorite-download-option:hover { background: #f8f9fa; }
+.fs-favorite-download-option:has(input:checked) { border-color: #188038; background: #e6f4ea; }
+.fs-favorite-download-option input { margin: 0; accent-color: #188038; }
+.fs-favorite-download-option:has(input:focus-visible) { box-shadow: 0 0 0 2px rgba(24,128,56,.2); }
+
+.fs-favorite-folder-checklist {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.fs-favorite-check-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin: 0 0 8px;
+}
+
+.fs-favorite-check-all,
+.fs-favorite-create-inline {
+  padding: 3px 7px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #1967d2;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.fs-favorite-check-all:hover,
+.fs-favorite-create-inline:hover:not(:disabled) { background: #e8f0fe; }
+.fs-favorite-create-inline { margin-top: 8px; }
+.fs-favorite-create-inline:disabled { color: #9aa0a6; cursor: default; }
+
+.fs-favorite-check-list {
+  display: grid;
+  gap: 6px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.fs-favorite-check-option {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid #dadce0;
+  border-radius: 7px;
+  color: #202124;
+  font-size: 13px;
+  cursor: pointer;
+}
+.fs-favorite-check-option:hover { background: #f8f9fa; }
+.fs-favorite-check-option:has(input:checked) { border-color: #188038; background: #e6f4ea; }
+.fs-favorite-check-option input { margin: 0; accent-color: #188038; }
+.fs-favorite-check-option:has(input:focus-visible) { box-shadow: 0 0 0 2px rgba(24,128,56,.2); }
+
+.fs-modal-error {
+  display: block;
+  font-size: 11px;
+  color: #d93025;
+  margin-top: 4px;
+}
+
+.fs-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.fs-modal-btn {
+  height: 32px;
+  padding: 0 16px;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  background: #fff;
+  color: #202124;
+}
+
+.fs-modal-btn:hover { background: #f1f3f4; }
+
+.fs-modal-btn-primary {
+  background: #188038;
+  border-color: #188038;
+  color: #fff;
+}
+
+.fs-modal-btn-primary:hover:not(:disabled) { background: #137333; border-color: #137333; }
+
+/* ── SheetD settings ── */
+.fs-settings-modal { width: min(460px, calc(100vw - 32px)); padding: 0; overflow: hidden; }
+.fs-settings-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 20px 22px 16px; border-bottom: 1px solid #e6e8eb; }
+.fs-settings-head h2 { margin: 0; color: #202124; font-size: 17px; line-height: 1.3; }
+.fs-settings-head p { margin: 5px 0 0; color: #6b7280; font-size: 12px; line-height: 1.45; }
+.fs-settings-close { display: inline-grid; flex: 0 0 auto; place-items: center; width: 30px; height: 30px; border: 0; border-radius: 7px; background: transparent; color: #5f6368; cursor: pointer; }
+.fs-settings-close:hover { background: #f1f3f4; color: #202124; }
+.fs-settings-body { padding: 20px 22px; }
+.fs-settings-section h3 { margin: 0 0 12px; color: #188038; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.fs-setting-row { display: grid; grid-template-columns: minmax(0, 1fr) 150px; align-items: center; gap: 22px; padding: 14px; border: 1px solid #e1e5e9; border-radius: 9px; background: #fafbfc; }
+.fs-setting-copy label { display: block; color: #202124; font-size: 13px; font-weight: 600; }
+.fs-setting-copy p { margin: 5px 0 0; color: #6b7280; font-size: 11px; line-height: 1.45; }
+.fs-setting-select { width: 100%; height: 36px; padding: 0 9px; border: 1px solid #c9ced6; border-radius: 6px; background: #fff; color: #202124; font: inherit; font-size: 12px; }
+.fs-setting-select:focus-visible, .fs-settings-close:focus-visible { outline: 2px solid #188038; outline-offset: 2px; }
+.fs-settings-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 14px 22px 18px; border-top: 1px solid #e6e8eb; background: #fafbfc; }
+@media (max-width: 560px) { .fs-setting-row { grid-template-columns: 1fr; gap: 12px; } }
+
+/* ── Body / left panel layout ── */
+
+.fs-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  flex-direction: row;
+}
+
+/* The sheet fills the wrap; the panel overlays it (sheet keeps full width) */
+.fs-main-wrap {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.fs-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* ── Left panel: resizable split beside the sheet (workspace / import).
+   R1 (UX round 2): the panel must not overlay/hide the sheet — both share the
+   width, divided by the resize handle. ── */
+
+.fs-left-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  min-width: 180px;
+  max-width: 480px;
+  flex-shrink: 0;
+  border-right: 1px solid #e2e3e4;
+  background: #f8f9fa;
+  overflow: hidden;
+}
+
+.fs-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ── Resize handle (right edge of the overlay panel) ── */
+
+.fs-ws-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 4px;
+  cursor: col-resize;
+  background: transparent;
+  transition: background 120ms ease;
+  z-index: 61;
+}
+
+.fs-ws-handle:hover,
+.fs-ws-handle.dragging { background: #dadce0; }
+
+/* ── Tree ── */
+
+.fs-ws-tree {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* ── Workspace tree: schema-tree-* rows (shared with Metadata Folder pattern) ── */
+
+.schema-tree-row {
+  display: grid;
+  grid-template-columns: 1rem 1rem minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 0.34rem;
+  width: 100%;
+  height: 2rem;
+  min-height: 2rem;
+  padding: 0.18rem 0.55rem 0.18rem calc(0.45rem + var(--tree-indent, 0rem));
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #1f2328;
+  font: inherit;
+  font-weight: 400;
+  line-height: 1.15;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 80ms ease;
+}
+
+.schema-tree-row:hover { background: #e9eef5; }
+.schema-tree-row.selected,
+.schema-tree-row.selected:hover { background: #e6f4ea; color: #137333; }
+
+/* Workspace drag-and-drop drop markers */
+.schema-tree-row.drag-into { background: #e6f4ea; box-shadow: inset 0 0 0 1.5px #188038; }
+.schema-tree-row.drag-above { box-shadow: inset 0 2px 0 0 #188038; }
+.schema-tree-row.drag-below { box-shadow: inset 0 -2px 0 0 #188038; }
+.schema-tree-row.fs-favorite-movable { cursor: grab; }
+.schema-tree-row.fs-favorite-movable:active { cursor: grabbing; }
+
+/* Per-row ⋮ actions button (visible on hover / keyboard focus / selection) */
+.fs-ws-row-action-btn {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #5f6368;
+  font-size: 0.8rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 100ms ease, background 100ms ease;
+}
+.schema-tree-row:hover .fs-ws-row-action-btn,
+.schema-tree-row:focus-within .fs-ws-row-action-btn,
+.schema-tree-row:focus .fs-ws-row-action-btn,
+.schema-tree-row.selected .fs-ws-row-action-btn { opacity: 1; }
+.fs-ws-row-action-btn:hover { background: #dadce0; color: #1f2328; }
+
+.fs-ws-row-trailing {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.2rem;
+  min-width: 1.15rem;
+}
+
+.fs-action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+}
+.fs-action-icon svg { width: 14px; height: 14px; fill: currentColor; }
+.fs-action-icon.favorite { color: #5f6368; font-size: 14px; }
+.fs-action-icon.favorite.is-active { color: #f9ab00; }
+.fs-action-icon.excel,
+.fs-action-icon.csv {
+  border-radius: 3px;
+  color: #fff;
+  background: #188038;
+}
+.fs-action-icon.csv { width: 19px; flex-basis: 19px; font-size: 7px; letter-spacing: -0.4px; }
+
+.fs-ws-count {
+  min-width: 1rem;
+  padding: 0.06rem 0.28rem;
+  border-radius: 999px;
+  background: #e8eaed;
+  color: #5f6368;
+  font-size: 0.62rem;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.schema-tree-row.selected .fs-ws-count { background: #cce8d4; color: #0d652d; }
+
+/* ── WS5: keyboard focus ring on every interactive element ── */
+.fs-nav-tab:focus-visible,
+.fs-mode-tab:focus-visible,
+.fs-soql-run-btn:focus-visible,
+.fs-refresh-nav-btn:focus-visible,
+.schema-tree-row:focus-visible,
+.fs-ws-row-action-btn:focus-visible,
+.fs-ws-menu-item:focus-visible,
+.fs-ws-add-btn:focus-visible,
+.fs-ws-close-btn:focus-visible,
+.fs-error-retry-btn:focus-visible,
+.fs-error-dismiss-btn:focus-visible,
+.fs-stop-btn:focus-visible,
+.fs-resume-btn:focus-visible,
+.fs-modal-btn:focus-visible,
+.fs-upload-label:focus-visible {
+  outline: 2px solid #188038;
+  outline-offset: 1px;
+}
+
+.schema-tree-caret {
+  width: 0;
+  height: 0;
+  margin-left: 0.25rem;
+  border-top: 0.22rem solid transparent;
+  border-bottom: 0.22rem solid transparent;
+  border-left: 0.32rem solid #68707a;
+  transition: transform 90ms ease-out;
+}
+
+.schema-tree-folder.open > .schema-tree-folder-row .schema-tree-caret {
+  transform: rotate(90deg);
+}
+
+.schema-tree-indent {
+  width: 1rem;
+  height: 1rem;
+}
+
+.schema-tree-icon {
+  position: relative;
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+}
+
+.schema-tree-icon.folder::before {
+  content: "";
+  position: absolute;
+  left: 0.1rem; top: 0.37rem;
+  width: 0.78rem; height: 0.48rem;
+  border: 1px solid #c29b28;
+  border-radius: 1px;
+  background: #e6c45f;
+}
+
+.schema-tree-icon.folder::after {
+  content: "";
+  position: absolute;
+  left: 0.11rem; top: 0.26rem;
+  width: 0.38rem; height: 0.18rem;
+  border: 1px solid #c29b28;
+  border-bottom: 0;
+  border-radius: 1px 1px 0 0;
+  background: #d9b64b;
+}
+
+.schema-tree-icon.file::before {
+  content: "";
+  position: absolute;
+  left: 0.24rem; top: 0.12rem;
+  width: 0.54rem; height: 0.78rem;
+  border: 1px solid #8d98a6;
+  border-radius: 1px;
+  background: #ffffff;
+}
+
+.schema-tree-icon.file::after {
+  content: "";
+  position: absolute;
+  right: 0.21rem; top: 0.13rem;
+  width: 0.18rem; height: 0.18rem;
+  border-left: 1px solid #8d98a6;
+  border-bottom: 1px solid #8d98a6;
+  background: #eef3f8;
+}
+
+/* Query file icon: blue document with a compact SOQL prompt marker. */
+.schema-tree-icon.query::before {
+  content: "";
+  position: absolute;
+  left: 0.22rem; top: 0.08rem;
+  width: 0.58rem; height: 0.82rem;
+  border: 1px solid #1a73e8;
+  border-radius: 2px;
+  background: #e8f0fe;
+}
+.schema-tree-icon.query::after {
+  content: ">_";
+  position: absolute;
+  left: 0.28rem; top: 0.34rem;
+  color: #1967d2;
+  font-size: 0.34rem;
+  font-weight: 800;
+  letter-spacing: -0.06rem;
+  line-height: 1;
+}
+
+/* CSV file icon: green document with a "csv" tag (UX round 3 — files are csv) */
+.schema-tree-icon.csv::before {
+  content: "";
+  position: absolute;
+  left: 0.24rem; top: 0.1rem;
+  width: 0.54rem; height: 0.8rem;
+  border: 1px solid #137333;
+  border-radius: 1px;
+  background: #e6f4ea;
+}
+.schema-tree-icon.csv::after {
+  content: "csv";
+  position: absolute;
+  left: 0.18rem; bottom: 0.08rem;
+  font-size: 0.34rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #137333;
+  line-height: 1;
+}
+
+.fs-ws-star-marker {
+  position: absolute;
+  right: -0.24rem;
+  top: -0.18rem;
+  z-index: 2;
+  color: #f9ab00;
+  font-size: 0.48rem;
+  line-height: 1;
+  text-shadow: 0 0 1px #fff, 0 0 1px #fff;
+  pointer-events: none;
+}
+
+.fs-ws-dyn-error {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2rem;
+  padding: 0.18rem 0.55rem 0.18rem calc(0.45rem + var(--tree-indent, 0rem));
+  color: #b3261e;
+  font-size: 0.7rem;
+}
+
+.fs-ws-dyn-error > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fs-ws-dyn-retry {
+  padding: 0.12rem 0.35rem;
+  border: 1px solid #f6aea8;
+  border-radius: 4px;
+  background: #fff;
+  color: #b3261e;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.fs-ws-dyn-retry:hover { background: #fce8e6; }
+
+.schema-tree-name {
+  display: grid;
+  gap: 0.03rem;
+  min-width: 0;
+}
+
+.schema-tree-primary {
+  overflow: hidden;
+  color: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.05;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.schema-tree-secondary {
+  overflow: hidden;
+  color: #667085;
+  font-size: 0.64rem;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.schema-tree-row.selected .schema-tree-secondary { color: #137333; }
+
+.fs-ws-empty {
+  padding: 16px 12px;
+  font-size: 0.72rem;
+  color: #5f6368;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* Folder (details/summary) */
+
+.fs-ws-folder {
+  display: block;
+}
+
+.fs-ws-folder-summary {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding-right: 6px;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  font-size: 12.5px;
+  color: #3c4043;
+  border-radius: 4px;
+  position: relative;
+}
+
+.fs-ws-folder-summary::-webkit-details-marker { display: none; }
+
+.fs-ws-folder-summary::before {
+  content: "▸";
+  font-size: 9px;
+  color: #5f6368;
+  flex-shrink: 0;
+  width: 12px;
+  text-align: center;
+  transition: transform 120ms ease;
+}
+
+.fs-ws-folder[open] > .fs-ws-folder-summary::before {
+  transform: rotate(90deg);
+}
+
+.fs-ws-folder-summary:hover { background: #e8eaed; }
+
+.fs-ws-folder-icon,
+.fs-ws-file-icon {
+  font-size: 12px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* File node */
+
+.fs-ws-file {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  padding-right: 6px;
+  cursor: pointer;
+  font-size: 12.5px;
+  color: #3c4043;
+  border-radius: 4px;
+  position: relative;
+}
+
+.fs-ws-file:hover { background: #e8eaed; }
+
+.fs-ws-file.active {
+  background: #e8f5e9;
+  color: #137333;
+}
+
+.fs-ws-file.active .fs-ws-action-btn { color: #137333; }
+
+/* Shared label */
+
+.fs-ws-node-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Action (⋮) button */
+
+.fs-ws-action-btn {
+  flex-shrink: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  background: none;
+  color: #5f6368;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 0;
+  line-height: 1;
+}
+
+.fs-ws-file:hover .fs-ws-action-btn,
+.fs-ws-folder-summary:hover .fs-ws-action-btn { display: flex; }
+
+.fs-ws-action-btn:hover { background: #dadce0; color: #3c4043; }
+
+/* Empty folder hint */
+
+.fs-ws-empty-folder {
+  font-size: 11px;
+  color: #5f6368;
+  padding: 3px 0;
+}
+
+/* Workspace toolbar (top of sidebar: filter input + [close]) */
+.fs-ws-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-bottom: 1px solid #e2e3e4;
+  background: #f8f9fa;
+  flex-shrink: 0;
+}
+
+.fs-ws-save-state {
+  flex-shrink: 0;
+  padding: 5px 8px;
+  border-bottom: 1px solid #f6c7c3;
+  background: #fce8e6;
+  color: #b3261e;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.fs-ws-save-state:not(.error) {
+  border-bottom-color: #d2e3fc;
+  background: #e8f0fe;
+  color: #174ea6;
+}
+
+/* Filter files/folders input (UX round 3 — replaces [+ CREATE]) */
+/* Wraps the filter input so the busy spinner can sit inside its right edge. */
+.fs-ws-filter-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  gap: 4px;
+}
+
+.fs-ws-filter-input-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}
+
+.fs-ws-filter {
+  flex: 1;
+  min-width: 0;
+  height: 26px;
+  padding: 0 8px;
+  border: 1px solid #dadce0;
+  border-radius: 5px;
+  background: #fff;
+  color: #3c4043;
+  font: inherit;
+  font-size: 12px;
+}
+.fs-ws-filter:focus { border-color: #188038; box-shadow: 0 0 0 2px rgba(24,128,56,0.18); outline: none; }
+
+.fs-ws-search-btn {
+  height: 26px;
+  padding: 0 9px;
+  border: 1px solid #188038;
+  border-radius: 5px;
+  background: #188038;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.fs-ws-search-btn:hover { background: #137333; border-color: #137333; }
+
+.fs-ws-clear-btn {
+  height: 26px;
+  padding: 0 8px;
+  border: 1px solid #dadce0;
+  border-radius: 5px;
+  background: #fff;
+  color: #3c4043;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.fs-ws-clear-btn:hover { background: #f1f3f4; border-color: #bdc1c6; }
+.fs-ws-search-btn:focus-visible,
+.fs-ws-clear-btn:focus-visible { outline: 2px solid rgba(24,128,56,0.3); outline-offset: 1px; }
+
+/* Shown while the tree is lazy-loading org data — filtering auto-expands the
+   Objects/Reports trees, and those fetches are what make a filter feel slow. */
+.fs-ws-spinner {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  width: 13px;
+  height: 13px;
+  margin-top: -7px;
+  border: 2px solid #c9d3e2;
+  border-top-color: #188038;
+  border-radius: 50%;
+  animation: fs-ws-spin 0.7s linear infinite;
+  pointer-events: none;
+}
+
+.fs-ws-spinner[hidden] { display: none; }
+
+/* Reserve room so the spinner never sits on top of typed text. */
+.fs-ws-filter-input-wrap:has(.fs-ws-spinner:not([hidden])) .fs-ws-filter { padding-right: 26px; }
+
+@keyframes fs-ws-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .fs-ws-spinner { animation-duration: 2.4s; }
+}
+
+/* Filter hides non-matching rows/folders */
+.fs-filter-hidden { display: none !important; }
+
+/* [←] close sidebar button — pushed to the right */
+.fs-ws-close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-left: auto;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #5f6368;
+  cursor: pointer;
+  transition: color 120ms ease, background 120ms ease;
+  flex-shrink: 0;
+}
+.fs-ws-close-btn svg { width: 18px; height: 18px; }
+.fs-ws-close-btn:hover { color: #3c4043; background: #e8eaed; }
+
+/* ── workspace node row (vanilla tree; formerly react-arborist styles) ── */
+
+.fs-ws-node {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  font-size: 12.5px;
+  color: #3c4043;
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 100%;
+  padding-right: 6px;
+}
+
+.fs-ws-node:hover { background: #e8eaed; }
+.fs-ws-node.active { background: #e8f5e9; color: #137333; }
+.fs-ws-node.active .fs-ws-action-btn { color: #137333; }
+.fs-ws-node:hover .fs-ws-action-btn { display: flex; }
+
+.fs-ws-node-chevron {
+  font-size: 9px;
+  color: #5f6368;
+  flex-shrink: 0;
+  width: 12px;
+  text-align: center;
+  display: inline-block;
+  transition: transform 120ms ease;
+}
+
+.fs-ws-rename-input {
+  flex: 1;
+  min-width: 0;
+  height: 20px;
+  padding: 0 4px;
+  border: 1px solid #188038;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 12.5px;
+  color: #1f2328;
+  background: #fff;
+  outline: none;
+}
+
+/* ── Context / add menu popup ── */
+
+.fs-ws-menu {
+  position: fixed;
+  z-index: 600;
+  background: #fff;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.14);
+  padding: 4px 0;
+  min-width: 140px;
+}
+
+.fs-ws-menu-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  padding: 6px 14px 6px 10px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 12.5px;
+  color: #3c4043;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.fs-ws-menu-item:hover { background: #e8f5e9; color: #137333; }
+.fs-ws-menu-item:disabled { color: #9aa0a6; cursor: default; }
+.fs-ws-menu-item:disabled:hover { background: transparent; color: #9aa0a6; }
+.fs-ws-menu-item.danger:hover { background: #fce8e6; color: #c5221f; }
+
+.fs-ws-menu-sep {
+  height: 1px;
+  background: #e2e3e4;
+  margin: 3px 0;
+}
+.fs-modal-btn-primary:disabled { background: #c5cae9; border-color: #c5cae9; cursor: not-allowed; }
+.fs-modal-btn-danger { background: #c5221f; border-color: #c5221f; color: #fff; }
+.fs-modal-btn-danger:hover { background: #a50e0e; border-color: #a50e0e; }
+
+.fs-export-progress progress { width: 100%; accent-color: #188038; }
+.fs-export-progress-label { margin-top: 0.55rem; color: #5f6368; font-size: 0.76rem; word-break: break-word; }
+.fs-export-failure-list { max-height: 260px; margin: 0; padding-left: 1.2rem; overflow: auto; color: #5f6368; font-size: 0.76rem; line-height: 1.5; }
+
+/* ── File details panel ─────────────────────────────────────────────────────
+   Right-hand companion to the left workspace tree: opened from a tree row's
+   right-click menu, it reports where a file's data comes from (the SOQL behind
+   an object list view, the filters behind a report). */
+.fs-details {
+  display: flex;
+  flex-direction: column;
+  width: 340px;
+  min-width: 240px;
+  max-width: 520px;
+  flex-shrink: 0;
+  border-left: 1px solid #e2e3e4;
+  background: #f8f9fa;
+  overflow: hidden;
+}
+
+.fs-details[hidden] { display: none; }
+
+.fs-details-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px solid #e2e3e4;
+  background: #fff;
+}
+
+.fs-details-title {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #202124;
+}
+
+.fs-details-close {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.15rem 0.3rem;
+  border-radius: 4px;
+  color: #5f6368;
+  line-height: 1;
+}
+
+.fs-details-close:hover { background: #f1f3f4; color: #202124; }
+
+.fs-details-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0.55rem;
+}
+
+/* Details render as cards: one per group of related facts. */
+.fs-details-card {
+  border: 1px solid #e2e3e4;
+  border-radius: 8px;
+  background: #fff;
+  padding: 0.5rem 0.6rem;
+  box-shadow: 0 1px 2px rgba(60, 64, 67, 0.08);
+}
+
+.fs-details-card + .fs-details-card { margin-top: 0.5rem; }
+
+.fs-details-card-title {
+  margin: 0 0 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #1a73e8;
+}
+
+/* Field rows: label above value, so long API names and values never collide. */
+.fs-details-field + .fs-details-field {
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid #f1f3f4;
+}
+
+.fs-details-label {
+  display: block;
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: #5f6368;
+  margin-bottom: 0.1rem;
+}
+
+.fs-details-value {
+  font-size: 0.76rem;
+  color: #202124;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+/* Query strings and filter expressions read as code, and can be long. */
+.fs-details-code {
+  margin: 0;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #e2e3e4;
+  border-radius: 4px;
+  background: #f8f9fa;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: #202124;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.fs-details-empty {
+  font-size: 0.74rem;
+  font-style: italic;
+  color: #5f6368;
+}
+
+.fs-details-filters {
+  margin: 0;
+  padding-left: 1.05rem;
+  font-size: 0.75rem;
+  color: #202124;
+}
+
+.fs-details-filters li + li { margin-top: 0.25rem; }
+
+/* Pending edits card: sits above the file's own cards, gold-edged so it reads as
+   an action waiting on the user rather than another block of metadata. */
+.fs-details-changes { border-color: #e3c268; }
+.fs-details-changes .fs-details-card-title { color: #a17706; }
+
+.fs-details-change + .fs-details-change {
+  margin-top: 0.45rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid #f1f3f4;
+}
+
+.fs-details-change-id {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.7rem;
+  color: #5f6368;
+  margin-bottom: 0.2rem;
+  overflow-wrap: anywhere;
+}
+
+.fs-details-change-field {
+  font-size: 0.74rem;
+  color: #202124;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+.fs-details-change-name {
+  font-weight: 600;
+  margin-right: 0.35rem;
+}
+
+.fs-details-change-before {
+  color: #c5221f;
+  text-decoration: line-through;
+}
+
+.fs-details-change-after {
+  color: #137333;
+  font-weight: 600;
+}
+
+/* Editable SOQL inside the Query card: edit it, run it, sheet updates. */
+.fs-details-query {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 112px;
+  resize: vertical;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #c9d3e2;
+  border-radius: 4px;
+  background: #ffffff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: #202124;
+}
+
+.fs-details-query:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.18);
+}
+
+.fs-details-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+}
+
+.fs-details-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid #c9d3e2;
+  border-radius: 6px;
+  background: #fff;
+  color: #5f6368;
+  cursor: pointer;
+}
+.fs-details-copy svg { width: 16px; height: 16px; fill: currentColor; }
+.fs-details-copy:hover { background: #eef3f8; color: #1a73e8; }
+.fs-details-copy.copied { border-color: #188038; color: #188038; background: #e6f4ea; }
+
+.fs-details-create-query {
+  padding: 4px 10px;
+  border: 1px solid #1a73e8;
+  border-radius: 6px;
+  background: #fff;
+  color: #1a73e8;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.fs-details-create-query:hover { background: #e8f0fe; }
+
+.fs-details-run {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #fff;
+  background: #1a73e8;
+  border: 1px solid #1a73e8;
+  border-radius: 6px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+.fs-details-run:hover:not(:disabled) { background: #1765cc; border-color: #1765cc; }
+.fs-details-run:disabled { background: #9aa0a6; border-color: #9aa0a6; cursor: default; }
+.fs-details-run:focus-visible { outline: 2px solid #1a73e8; outline-offset: 2px; }
+.fs-details-copy:focus-visible,
+.fs-details-create-query:focus-visible { outline: 2px solid #1a73e8; outline-offset: 2px; }
+
+/* Header toggle for the details panel */
+.fs-details-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #5f6368;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.fs-details-toggle svg { width: 16px; height: 16px; }
+.fs-details-toggle:hover { background: #f1f3f4; color: #202124; }
+.fs-details-toggle[aria-expanded="true"] {
+  background: #e8f0fe;
+  border-color: #c4d3ec;
+  color: #1a73e8;
+}
+.fs-details-toggle:focus-visible { outline: 2px solid #1a73e8; outline-offset: 2px; }

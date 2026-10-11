@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="icon-32.png">
+    <title>Admin Toolkit for Salesforce</title>
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body class="popup-shell">
+    <main>
+      <header class="popup-brand">
+        <img src="icon-48.png" alt="">
+        <div class="popup-brand-copy">
+          <h1 id="current-tab-title" class="popup-brand-name" data-i18n="app.shortTitle">Admin Toolkit</h1>
+          <span class="popup-brand-sub" data-i18n="app.forSalesforce">for Salesforce</span>
+        </div>
+        <button type="button" id="popup-version" class="popup-version-badge" title="View release notes"></button>
+      </header>
+
+      <section id="popup-org-selection" class="popup-org-selection" aria-labelledby="popup-org-selection-title">
+        <div class="popup-org-selection-heading">
+          <div>
+            <p class="popup-org-eyebrow" data-i18n="popup.orgSelector.eyebrow">Salesforce connection</p>
+            <h2 id="popup-org-selection-title" data-i18n="popup.orgSelector.title">Choose an org</h2>
+          </div>
+          <button type="button" id="popup-org-refresh" class="secondary popup-org-refresh" data-i18n-title="common.refresh" data-i18n-aria-label="popup.orgSelector.refresh" title="Refresh" aria-label="Refresh Salesforce orgs">↻</button>
+        </div>
+        <p class="popup-org-selection-intro" data-i18n="popup.orgSelector.intro">Select the Salesforce org to use before opening the toolkit.</p>
+        <div id="popup-org-loading" class="popup-org-empty" data-i18n="popup.orgSelector.loading">Checking open Salesforce tabs…</div>
+        <div id="popup-org-empty" class="popup-org-empty" hidden>
+          <strong data-i18n="popup.orgSelector.empty">No signed-in Salesforce org found</strong>
+          <span data-i18n="popup.orgSelector.emptyHelp">Open or sign in to Salesforce, then refresh this list.</span>
+        </div>
+        <div id="popup-org-list" class="popup-org-list"></div>
+        <p id="popup-org-status" class="status" role="status" aria-live="polite"></p>
+      </section>
+
+      <section id="popup-main-screen" class="popup-main-screen" hidden>
+        <div class="popup-connection-bar">
+          <span class="popup-connection-dot" aria-hidden="true"></span>
+          <p id="status" class="status" role="status" aria-live="polite" data-i18n="status.waitingSession">Waiting for Salesforce session...</p>
+          <button type="button" id="popup-change-org" class="popup-change-org" data-i18n="popup.orgSelector.change">Change org</button>
+        </div>
+
+      <div class="popup-startup-search">
+        <div class="popup-startup-search-row">
+          <div class="popup-search-field">
+            <input
+              type="search"
+              id="popup-search-input"
+              autocomplete="off"
+              spellcheck="false"
+              data-i18n-placeholder="popup.search.placeholder"
+              placeholder="Search metadata by API name, label, or text"
+            >
+            <div id="popup-search-suggestions" class="data-export-inline-suggestions popup-search-inline-suggestions" hidden></div>
+          </div>
+          <button type="button" id="popup-search-button" class="secondary popup-search-button" data-i18n-title="popup.search.action" data-i18n-aria-label="popup.search.action" title="Search" aria-label="Search">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m21 19.6-5.3-5.3a7.5 7.5 0 1 0-1.4 1.4l5.3 5.3L21 19.6ZM5 10a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="popup-shell-card">
+        <div class="tabs" data-tab-group="main">
+          <button type="button" class="tab-button active" data-tab-target="apps" data-i18n="nav.apps">Apps</button>
+          <button type="button" class="tab-button" data-tab-target="tools" data-i18n="nav.tools">Tools</button>
+          <button type="button" class="tab-button" data-tab-target="org" data-i18n="nav.org">Org</button>
+          <button type="button" id="popup-search-tab" class="tab-button" data-tab-target="search" data-i18n="nav.search" hidden>Search</button>
+        </div>
+
+        <section id="tools" class="tab-panel" data-tab-panel="main">
+          <div class="tool-launcher">
+            <section class="tools-category">
+              <h2 data-i18n="tools.category.developer">Developer Tools</h2>
+              <div class="tool-launcher-list">
+                <button type="button" id="open-rest-explorer" class="secondary" data-i18n="tools.restExplorer">REST API</button>
+                <button type="button" id="open-run-apex" class="secondary" data-i18n="tools.runApex">Run Apex Code</button>
+              </div>
+            </section>
+            <section class="tools-category">
+              <h2 data-i18n="tools.category.administrator">Admin Tools</h2>
+              <div class="tool-launcher-list">
+                <button type="button" id="open-data-export" class="secondary" data-i18n="tools.dataExport">Data Export</button>
+                <button type="button" id="open-document-folders" class="secondary" data-i18n="tools.documentFolders">Document Folders</button>
+              </div>
+            </section>
+            <section class="tools-category">
+              <h2 data-i18n="tools.category.monitoring">Monitoring</h2>
+              <div class="tool-launcher-list">
+                <button type="button" id="open-monitoring-audit" class="secondary" data-i18n="monitoring.setupAudit">View Setup Audit Trail</button>
+                <button type="button" id="open-monitoring-api-usage" class="secondary" data-i18n="monitoring.limitations">Limits</button>
+                <button type="button" id="open-monitoring-login-history" class="secondary" data-i18n="monitoring.loginHistory">Login History</button>
+                <button type="button" id="open-monitoring-event-logs" class="secondary" data-i18n="monitoring.eventLogs">Event Log Files</button>
+              </div>
+            </section>
+            <section class="tools-category">
+              <h2 data-i18n="tools.category.reference">Reference</h2>
+              <div class="tool-launcher-list">
+                <button type="button" id="open-manual" class="secondary" data-i18n="tools.manual">Manual</button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section id="org" class="tab-panel" data-tab-panel="main">
+          <div class="popup-summary-grid">
+            <section class="popup-summary-panel">
+              <h2 data-i18n="org.summary">Org Summary</h2>
+              <dl class="kv" id="org-summary"></dl>
+            </section>
+            <section class="popup-summary-panel">
+              <h2 data-i18n="org.userSummary">User Summary</h2>
+              <dl class="kv" id="user-summary"></dl>
+            </section>
+          </div>
+        </section>
+
+        <section id="search" class="tab-panel" data-tab-panel="main">
+          <div class="popup-search-view">
+            <p id="popup-search-summary" class="popup-search-summary" data-i18n="popup.search.empty">Search metadata descriptions with Tooling API.</p>
+            <div id="popup-search-results" class="popup-search-results"></div>
+          </div>
+        </section>
+
+        <section id="apps" class="tab-panel active" data-tab-panel="main">
+          <div class="popup-apps-grid">
+            <button type="button" id="open-schema" class="popup-app-card">
+              <svg class="popup-app-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm11 0h-2v2h2v2h-2v2h2v-2h2v2h2v-2h-2v-2h2v-2h-2v2h-2v-2z"/>
+              </svg>
+              <span class="popup-app-name" data-i18n="tools.metadataFolder">DataDock for Salesforce</span>
+              <span class="popup-app-desc" data-i18n="tools.metadataFolder.description">Browse, compare, and package metadata across orgs.</span>
+            </button>
+            <button type="button" id="open-org-differences" class="popup-app-card">
+              <svg class="popup-app-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M7 3h10v3h3v15h-8v-3h5V9h-3v3H4V3h3Zm0 3v3h4V6H7Zm10 6h3l-4 4-4-4h3V8h2v4ZM4 15h6v6H4v-6Zm3 2H6v2h1v-2Z"/>
+              </svg>
+              <span class="popup-app-name" data-i18n="tools.orgDifferences">Org Differences</span>
+              <span class="popup-app-desc" data-i18n="tools.orgDifferences.description">Compare metadata between orgs and outbound change sets.</span>
+            </button>
+            <button type="button" id="open-force-sheet" class="popup-app-card">
+              <svg class="popup-app-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm2 0v2h14V5H5Zm0 4v10h14V9H5Zm2 2h10v1.5H7V11Zm0 3h7v1.5H7V14Zm0 3h4v1.5H7V17Z"/>
+              </svg>
+              <span class="popup-app-name" data-i18n="tools.forceSheet">SheetD</span>
+              <span class="popup-app-desc" data-i18n="tools.forceSheet.description">Run SOQL queries and view results in a spreadsheet grid.</span>
+            </button>
+            <button type="button" id="open-object-schema" class="popup-app-card">
+              <svg class="popup-app-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M10 3h4v4h-4V3Zm1 4h2v4h-2V7ZM5 11h14v2H5v-2Zm0 2h2v4H5v-4Zm12 0h2v4h-2v-4ZM4 17h4v4H4v-4Zm12 0h4v4h-4v-4Z"/>
+              </svg>
+              <span class="popup-app-name" data-i18n="tools.objectSchema">Object Schema</span>
+              <span class="popup-app-desc" data-i18n="tools.objectSchema.description">Explore focused parent and child object relationships.</span>
+            </button>
+            <button type="button" id="open-permission-explorer" class="popup-app-card">
+              <svg class="popup-app-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M12 1 4 4.5v6c0 4.7 3.4 9.1 8 10.5 4.6-1.4 8-5.8 8-10.5v-6L12 1Zm0 6a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Zm0 11c-1.9-.6-3.6-2-4.6-3.8.5-1.3 2.5-2 4.6-2s4.1.7 4.6 2c-1 1.8-2.7 3.2-4.6 3.8Z"/>
+              </svg>
+              <span class="popup-app-name" data-i18n="tools.permissionExplorer">Permission Explorer</span>
+              <span class="popup-app-desc" data-i18n="tools.permissionExplorer.description">Explain why a user can access an object or field.</span>
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <footer data-i18n="popup.footer">Runs in your browser using the Salesforce session of your selected org.</footer>
+      </section>
+    </main>
+
+    <template id="popup-org-template">
+      <article class="popup-org-card">
+        <span class="popup-org-avatar" aria-hidden="true">SF</span>
+        <div class="popup-org-copy">
+          <div class="popup-org-name-row">
+            <strong></strong>
+            <span class="popup-org-current" data-i18n="popup.orgSelector.current" hidden>Current tab</span>
+          </div>
+          <span class="popup-org-username"></span>
+          <small></small>
+        </div>
+        <button class="popup-org-select" type="button" data-i18n="popup.orgSelector.select">Select</button>
+      </article>
+    </template>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

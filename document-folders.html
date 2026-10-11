@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="icon-32.png">
+    <title>Document Folders</title>
+    <link rel="stylesheet" href="shared.css">
+  </head>
+  <body>
+    <main class="shell schema-shell document-folders-shell">
+      <div class="card">
+        <section class="hero">
+          <div class="eyebrow" data-i18n="app.title">Admin Toolkit for Salesforce</div>
+          <div id="document-folders-status" class="status">Waiting for Salesforce session...</div>
+        </section>
+
+        <section class="section schema-viewer-controls document-folders-controls">
+          <div class="schema-viewer-toolbar schema-inline-toolbar">
+            <div class="schema-toolbar-controls schema-workspace-controls" aria-label="Document folder controls">
+              <button type="button" id="refresh-document-folders" class="secondary schema-toolbar-icon-button" aria-label="Reload document folders" title="Reload document folders">
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35Z"/>
+                </svg>
+              </button>
+            </div>
+            <p id="document-folders-operation-status" class="small schema-status" hidden></p>
+          </div>
+        </section>
+
+        <section class="section schema-viewer-section document-folders-section">
+          <div class="schema-workbench document-folders-workbench">
+            <aside class="schema-explorer document-folders-explorer" aria-label="Document folder tree">
+              <nav class="schema-sidebar-tabs" role="tablist" aria-label="Document folders activity bar">
+                <button type="button" class="schema-sidebar-tab active" role="tab" aria-selected="true" aria-label="Document Folders" title="Document Folders">
+                  <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/>
+                  </svg>
+                </button>
+              </nav>
+              <section class="schema-sidebar-tab-panel active document-folders-panel" role="tabpanel">
+                <div class="schema-sidebar-panel-head">
+                  <span>Document Folders</span>
+                </div>
+                <div class="schema-explorer-filter schema-search-view document-folder-filter">
+                  <div class="schema-explorer-search-row schema-search-input-row">
+                    <input id="document-folder-filter" type="search" aria-label="Find Folder or Document" placeholder="Find Folder or Document" autocomplete="off" spellcheck="false">
+                    <button type="button" id="document-folder-filter-button" class="secondary schema-search-run-button" title="Find Folder or Document" aria-label="Find Folder or Document">
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="m21 19.6-5.3-5.3a7.5 7.5 0 1 0-1.4 1.4l5.3 5.3L21 19.6ZM5 10a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div id="document-folder-tree" class="schema-tree schema-tree-full document-folder-tree"></div>
+              </section>
+            </aside>
+            <div id="document-folder-column-resizer" class="schema-column-resizer" role="separator" aria-orientation="vertical" aria-label="Resize document folder sidebar" tabindex="0"></div>
+            <section id="document-folder-detail" class="schema-detail-panel document-folder-detail" aria-live="polite"></section>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="tools-nav.js"></script>
+    <script type="module" src="document-folders.js"></script>
+  </body>
+</html>

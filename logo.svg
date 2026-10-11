@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Admin Toolkit for Salesforce — 3 tone fan">
+  <defs>
+    <clipPath id="c"><rect x="4" y="4" width="120" height="120" rx="28"/></clipPath>
+  </defs>
+  <g clip-path="url(#c)"><rect x="4" y="4" width="120" height="120" fill="#4166f0"/>
+    <path d="M124 4L-153.1 164.0L-196.0 1.8Z" fill="#1210a1"/><path d="M124 4L-36.0 281.1L-154.2 162.1Z" fill="#2540c8"/><path d="M124 4L124.0 324.0L-37.9 280.0Z" fill="#4166f0"/></g>
+  <g transform="translate(64 64) scale(0.92) translate(-65 -64)">
+    <path d="M26 24h34c26 0 44 16 44 40s-18 40-44 40H26V24Zm18 16v48h14c17 0 27-9 27-24s-10-24-27-24h-14Z" fill-rule="evenodd" fill="#fff"/>
+    <g transform="translate(47 49) scale(1.25)"><g fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><path d="M12 2.6l8.1 4.7v9.4L12 21.4l-8.1-4.7V7.3Z"/></g></g>
+  </g>
+</svg>

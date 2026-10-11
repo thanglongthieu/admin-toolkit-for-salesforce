@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="icon-32.png">
+    <title data-i18n-document-title="orgDiff.title">Org Differences</title>
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="org-differences.css">
+  </head>
+  <body>
+    <main class="shell app-session-shell org-diff-shell">
+      <div class="card">
+        <section class="hero app-session-header org-diff-header">
+          <div class="hero-eyebrow-row">
+            <img class="org-diff-brand-logo" src="logo.svg" alt="">
+            <div class="org-diff-app-launcher">
+              <button
+                type="button"
+                id="org-diff-app-launcher-button"
+                class="org-diff-app-launcher-button"
+                aria-haspopup="dialog"
+                aria-expanded="false"
+                aria-controls="org-diff-app-launcher-menu"
+                data-i18n-title="nav.appsTools"
+                data-i18n-aria-label="nav.appsTools"
+                title="Apps &amp; Tools"
+                aria-label="Apps &amp; Tools"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="5" cy="5" r="1.7"></circle><circle cx="12" cy="5" r="1.7"></circle><circle cx="19" cy="5" r="1.7"></circle>
+                  <circle cx="5" cy="12" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="19" cy="12" r="1.7"></circle>
+                  <circle cx="5" cy="19" r="1.7"></circle><circle cx="12" cy="19" r="1.7"></circle><circle cx="19" cy="19" r="1.7"></circle>
+                </svg>
+              </button>
+              <section id="org-diff-app-launcher-menu" class="org-diff-app-launcher-menu" role="dialog" aria-labelledby="org-diff-app-launcher-title" hidden>
+                <header class="org-diff-app-launcher-head">
+                  <h2 id="org-diff-app-launcher-title" data-i18n="nav.appsTools">Apps &amp; Tools</h2>
+                  <button type="button" id="org-diff-app-launcher-close" class="org-diff-app-launcher-close" data-i18n-title="common.close" data-i18n-aria-label="common.close" title="Close" aria-label="Close">×</button>
+                </header>
+                <nav class="org-diff-app-list" data-i18n-aria-label="nav.apps" aria-label="Apps">
+                  <a class="org-diff-app-link" href="schema-viewer.html" data-app-page="schema-viewer.html">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm11 0h-2v2h2v2h-2v2h2v-2h2v2h2v-2h-2v-2h2v-2h-2v2h-2v-2z"/></svg>
+                    <span><strong data-i18n="tools.metadataFolder">DataDock for Salesforce</strong><small data-i18n="tools.metadataFolder.description">Browse, compare, and package metadata across orgs.</small></span>
+                  </a>
+                  <a class="org-diff-app-link active" href="org-differences.html" data-app-page="org-differences.html" aria-current="page">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 3h10v3h3v15h-8v-3h5V9h-3v3H4V3h3Zm0 3v3h4V6H7Zm10 6h3l-4 4-4-4h3V8h2v4ZM4 15h6v6H4v-6Zm3 2H6v2h1v-2Z"/></svg>
+                    <span><strong data-i18n="tools.orgDifferences">Org Differences</strong><small data-i18n="tools.orgDifferences.description">Compare metadata between orgs and outbound change sets.</small></span>
+                  </a>
+                  <a class="org-diff-app-link" href="force-sheet.html" data-app-page="force-sheet.html">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm2 0v2h14V5H5Zm0 4v10h14V9H5Zm2 2h10v1.5H7V11Zm0 3h7v1.5H7V14Zm0 3h4v1.5H7V17Z"/></svg>
+                    <span><strong data-i18n="tools.forceSheet">SheetD</strong><small data-i18n="tools.forceSheet.description">Run SOQL queries and view results in a spreadsheet grid.</small></span>
+                  </a>
+                  <a class="org-diff-app-link" href="object-schema.html" data-app-page="object-schema.html">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M10 3h4v4h-4V3Zm1 4h2v4h-2V7ZM5 11h14v2H5v-2Zm0 2h2v4H5v-4Zm12 0h2v4h-2v-4ZM4 17h4v4H4v-4Zm12 0h4v4h-4v-4Z"/></svg>
+                    <span><strong data-i18n="tools.objectSchema">Object Schema</strong><small data-i18n="tools.objectSchema.description">Explore focused parent and child object relationships.</small></span>
+                  </a>
+                  <a class="org-diff-app-link" href="permission-explorer.html" data-app-page="permission-explorer.html">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1 4 4.5v6c0 4.7 3.4 9.1 8 10.5 4.6-1.4 8-5.8 8-10.5v-6L12 1Zm0 6a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Zm0 11c-1.9-.6-3.6-2-4.6-3.8.5-1.3 2.5-2 4.6-2s4.1.7 4.6 2c-1 1.8-2.7 3.2-4.6 3.8Z"/></svg>
+                    <span><strong data-i18n="tools.permissionExplorer">Permission Explorer</strong><small data-i18n="tools.permissionExplorer.description">Explain why a user can access an object or field.</small></span>
+                  </a>
+                </nav>
+                <section class="org-diff-launcher-tools" aria-labelledby="org-diff-launcher-tools-title">
+                  <h3 id="org-diff-launcher-tools-title" data-i18n="nav.tools">Tools</h3>
+                  <nav class="org-diff-tool-list" data-i18n-aria-label="nav.tools" aria-label="Tools">
+                    <a class="org-diff-tool-link" href="rest-explorer.html" data-app-page="rest-explorer.html"><strong data-i18n="tools.restExplorer">REST API</strong></a>
+                    <a class="org-diff-tool-link" href="run-apex.html" data-app-page="run-apex.html"><strong data-i18n="tools.runApex">Run Apex Code</strong></a>
+                    <a class="org-diff-tool-link" href="data-export.html" data-app-page="data-export.html"><strong data-i18n="tools.dataExport">Data Export</strong></a>
+                    <a class="org-diff-tool-link" href="document-folders.html" data-app-page="document-folders.html"><strong data-i18n="tools.documentFolders">Document Folders</strong></a>
+                    <a class="org-diff-tool-link" href="setup-audit-trail.html" data-app-page="setup-audit-trail.html"><strong data-i18n="monitoring.setupAudit">View Setup Audit Trail</strong></a>
+                    <a class="org-diff-tool-link" href="latest-api-usage.html" data-app-page="latest-api-usage.html"><strong data-i18n="monitoring.limitations">Limits</strong></a>
+                    <a class="org-diff-tool-link" href="login-history.html" data-app-page="login-history.html"><strong data-i18n="monitoring.loginHistory">Login History</strong></a>
+                    <a class="org-diff-tool-link" href="event-logs.html" data-app-page="event-logs.html"><strong data-i18n="monitoring.eventLogs">Event Log Files</strong></a>
+                    <a class="org-diff-tool-link" href="manual.html" data-app-page="manual.html"><strong data-i18n="tools.manual">Manual</strong></a>
+                  </nav>
+                </section>
+              </section>
+            </div>
+            <h1 class="eyebrow app-session-page-title">
+              <svg class="app-session-header-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 3h10v3h3v15h-8v-3h5V9h-3v3H4V3h3Zm0 3v3h4V6H7Zm10 6h3l-4 4-4-4h3V8h2v4ZM4 15h6v6H4v-6Zm3 2H6v2h1v-2Z"/></svg>
+              <span data-i18n="orgDiff.title">Org Differences</span>
+            </h1>
+            <div id="org-diff-session-status" class="status" aria-live="polite" data-i18n="status.waitingSession">Waiting for Salesforce session...</div>
+          </div>
+        </section>
+
+        <section class="org-diff-workspace" aria-labelledby="org-diff-workspace-title">
+          <section class="org-diff-builder">
+            <div class="org-diff-intro">
+              <div>
+                <p class="org-diff-eyebrow" data-i18n="orgDiff.workspace.eyebrow">Read-only metadata comparison</p>
+                <h2 id="org-diff-workspace-title" data-i18n="orgDiff.workspace.title">Choose source and target</h2>
+                <p data-i18n="orgDiff.workspace.description">Retrieve source from two signed-in orgs and review differences without changing Salesforce.</p>
+              </div>
+              <span class="org-diff-read-only">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M10 2a5 5 0 0 0-5 5v2H3v9h14V9h-2V7a5 5 0 0 0-5-5Zm-3 7V7a3 3 0 1 1 6 0v2H7Zm4 3v3H9v-3h2Z"/></svg>
+                <span data-i18n="orgDiff.readOnly">Read only</span>
+              </span>
+            </div>
+
+            <fieldset id="org-diff-mode" class="org-diff-mode">
+              <legend data-i18n="orgDiff.mode.legend">Comparison mode</legend>
+              <div class="org-diff-mode-options">
+                <label><input type="radio" name="orgDiffMode" value="org-org" checked><span data-i18n="orgDiff.mode.orgOrg">Org vs Org</span></label>
+                <label><input type="radio" name="orgDiffMode" value="change-set-org"><span data-i18n="orgDiff.mode.changeSetOrg">Change Set vs Org</span></label>
+                <label><input type="radio" name="orgDiffMode" value="change-set-change-set"><span data-i18n="orgDiff.mode.changeSetChangeSet">Change Set vs Change Set</span></label>
+              </div>
+            </fieldset>
+
+            <div class="org-diff-endpoints">
+              <section class="org-diff-endpoint" aria-labelledby="org-diff-left-title">
+                <div class="org-diff-endpoint-heading">
+                  <span class="org-diff-side-number">1</span>
+                  <h3 id="org-diff-left-title" data-i18n="orgDiff.source">Source</h3>
+                </div>
+                <label>
+                  <span data-i18n="orgDiff.org">Salesforce org</span>
+                  <select id="org-diff-left-org"></select>
+                </label>
+                <label id="org-diff-left-change-set-field" hidden>
+                  <span data-i18n="orgDiff.changeSet">Outbound change set</span>
+                  <select id="org-diff-left-change-set"></select>
+                </label>
+                <p id="org-diff-left-status" class="org-diff-side-status" aria-live="polite"></p>
+              </section>
+
+              <span class="org-diff-direction" aria-hidden="true">⇄</span>
+
+              <section class="org-diff-endpoint" aria-labelledby="org-diff-right-title">
+                <div class="org-diff-endpoint-heading">
+                  <span class="org-diff-side-number org-diff-side-number-target">2</span>
+                  <h3 id="org-diff-right-title" data-i18n="orgDiff.target">Target</h3>
+                </div>
+                <label>
+                  <span data-i18n="orgDiff.org">Salesforce org</span>
+                  <select id="org-diff-right-org"></select>
+                </label>
+                <label id="org-diff-right-change-set-field" hidden>
+                  <span data-i18n="orgDiff.changeSet">Outbound change set</span>
+                  <select id="org-diff-right-change-set"></select>
+                </label>
+                <p id="org-diff-right-status" class="org-diff-side-status" aria-live="polite"></p>
+              </section>
+            </div>
+
+            <div id="org-diff-language-warning" class="org-diff-language-warning" role="status" aria-live="polite" hidden></div>
+
+            <div class="org-diff-action-row">
+              <div class="org-diff-action-copy">
+                <p id="org-diff-status" class="org-diff-builder-status" role="status" aria-live="polite"></p>
+                <div id="org-diff-progress" class="org-diff-progress" hidden>
+                  <div class="org-diff-progress-meter">
+                    <progress id="org-diff-progress-bar" max="100" value="0" aria-describedby="org-diff-progress-detail"></progress>
+                    <strong id="org-diff-progress-percent">0%</strong>
+                  </div>
+                  <p id="org-diff-progress-detail"></p>
+                </div>
+              </div>
+              <button type="button" id="org-diff-compare" disabled>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M3 4h8v2H3V4Zm0 5h14v2H3V9Zm0 5h10v2H3v-2Zm12.6-.8 1.4 1.4-3.8 3.8-2.2-2.2 1.4-1.4.8.8 2.4-2.4Z"/></svg>
+                <span id="org-diff-compare-label" data-i18n="orgDiff.compare.scope">Choose metadata &amp; compare</span>
+              </button>
+            </div>
+            <div id="org-diff-alert" class="status error" role="alert" hidden></div>
+          </section>
+
+          <section id="org-diff-results" class="org-diff-results" hidden aria-labelledby="org-diff-results-title">
+            <div class="org-diff-results-head">
+              <div>
+                <p class="org-diff-eyebrow" data-i18n="orgDiff.results.eyebrow">Latest comparison</p>
+                <h2 id="org-diff-results-title" data-i18n="orgDiff.results">Comparison results</h2>
+                <p id="org-diff-results-summary" class="org-diff-results-summary"></p>
+              </div>
+            </div>
+            <div id="org-diff-filters" class="org-diff-filters" role="group" data-i18n-aria-label="orgDiff.filters.aria"></div>
+            <div class="org-diff-results-body">
+              <div class="org-diff-results-list-pane">
+                <div class="org-diff-list-heading" aria-hidden="true">
+                  <span class="org-diff-list-select-spacer"></span>
+                  <span data-i18n="orgDiff.sourcePath">Source path</span>
+                  <span data-i18n="orgDiff.fileStatus">Status</span>
+                </div>
+                <div id="org-diff-results-list" class="org-diff-results-list" aria-live="polite"></div>
+              </div>
+              <section id="org-diff-detail-pane" class="org-diff-detail-pane" aria-label="Code diff" data-i18n-aria-label="orgDiff.detail.aria">
+                <header class="org-diff-detail-toolbar">
+                  <div class="org-diff-detail-context-wrap">
+                    <h3 id="org-diff-detail-context" class="org-diff-detail-context"></h3>
+                    <span id="org-diff-detail-context-state" class="org-diff-detail-state" hidden></span>
+                  </div>
+                  <button
+                    type="button"
+                    id="org-diff-detail-fullscreen"
+                    class="org-diff-detail-fullscreen"
+                    aria-controls="org-diff-detail"
+                    aria-pressed="false"
+                    aria-label="Full screen code diff"
+                    title="Full screen code diff"
+                    data-i18n-aria-label="orgDiff.detail.fullscreen"
+                    data-i18n-title="orgDiff.detail.fullscreen"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path class="org-diff-fullscreen-expand" d="M4 4h6v2H6v4H4V4Zm10 0h6v6h-2V6h-4V4ZM4 14h2v4h4v2H4v-6Zm14 0h2v6h-6v-2h4v-4Z"/><path class="org-diff-fullscreen-collapse" d="M5 16h3v3h2v-5H5v2Zm3-8H5v2h5V5H8v3Zm6 11h2v-3h3v-2h-5v5Zm2-11V5h-2v5h5V8h-3Z"/>
+                    </svg>
+                  </button>
+                </header>
+                <section id="org-diff-detail" class="org-diff-detail" aria-live="polite"></section>
+              </section>
+            </div>
+          </section>
+        </section>
+      </div>
+    </main>
+
+    <dialog id="org-diff-scope-dialog" class="org-diff-scope-dialog org-diff-scope-dialog-wide" aria-labelledby="org-diff-scope-title" aria-describedby="org-diff-scope-description">
+      <div class="org-diff-scope-content">
+        <header class="org-diff-scope-header">
+          <span class="org-diff-scope-icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path fill="currentColor" d="M3 3h6v6H3V3Zm8 0h6v6h-6V3ZM3 11h6v6H3v-6Zm8 0h6v6h-6v-6Z"/></svg></span>
+          <div>
+            <p class="org-diff-eyebrow" data-i18n="orgDiff.mode.orgOrg">Org vs Org</p>
+            <h2 id="org-diff-scope-title" data-i18n="orgDiff.scope.title">Confirm metadata scope</h2>
+          </div>
+        </header>
+        <p id="org-diff-scope-description" data-i18n="orgDiff.scope.description">Choose the metadata types to retrieve from both orgs. Nothing is written to Salesforce.</p>
+        <fieldset id="org-diff-scope-mode" class="org-diff-scope-mode">
+          <legend data-i18n="orgDiff.scope.mode">Metadata coverage</legend>
+          <label>
+            <input type="radio" name="orgDiffScopeMode" value="common" checked>
+            <span><strong data-i18n="orgDiff.scope.common">Common metadata</strong><small data-i18n="orgDiff.scope.commonHelp">Choose from the most-used metadata types.</small></span>
+          </label>
+          <label>
+            <input type="radio" name="orgDiffScopeMode" value="full">
+            <span><strong data-i18n="orgDiff.scope.full">Full metadata</strong><small data-i18n="orgDiff.scope.fullHelp">Choose from metadata types available in either org.</small></span>
+          </label>
+        </fieldset>
+        <div class="org-diff-scope-columns">
+          <section class="org-diff-scope-metadata" aria-labelledby="org-diff-scope-metadata-title">
+            <div class="org-diff-scope-section-head">
+              <h3 id="org-diff-scope-metadata-title" data-i18n="orgDiff.scope.metadataTypes">Metadata types</h3>
+              <button type="button" id="org-diff-scope-toggle" class="org-diff-text-button" data-i18n="common.clearAll">Clear All</button>
+            </div>
+            <label class="org-diff-scope-search">
+              <span class="slds-assistive-text" data-i18n="orgDiff.scope.findTypes">Find metadata types</span>
+              <input id="org-diff-scope-search" type="search" autocomplete="off" spellcheck="false" data-i18n-placeholder="orgDiff.scope.findTypes" placeholder="Find metadata types">
+            </label>
+            <div class="org-diff-scope-toolbar">
+              <span id="org-diff-scope-count"></span>
+            </div>
+            <div id="org-diff-scope-types" class="org-diff-scope-types"></div>
+          </section>
+          <section id="org-diff-scope-namespaces" class="org-diff-scope-namespaces" hidden>
+            <div class="org-diff-scope-section-head">
+              <div>
+                <h3 data-i18n="orgDiff.scope.namespaces">Packaged namespaces</h3>
+                <label class="org-diff-scope-unmanaged-toggle">
+                  <input id="org-diff-include-unmanaged" type="checkbox" role="switch" checked>
+                  <span data-i18n="orgDiff.scope.includeUnmanaged">Include unmanaged metadata</span>
+                </label>
+              </div>
+              <button type="button" id="org-diff-namespace-toggle" class="org-diff-text-button" data-i18n="common.selectAll">Select All</button>
+            </div>
+            <label class="org-diff-scope-search">
+              <span class="slds-assistive-text" data-i18n="orgDiff.scope.findNamespaces">Find packaged namespaces</span>
+              <input id="org-diff-namespace-search" type="search" autocomplete="off" spellcheck="false" data-i18n-placeholder="orgDiff.scope.findNamespaces" placeholder="Find packaged namespaces">
+            </label>
+            <div id="org-diff-namespace-options" class="org-diff-namespace-options"></div>
+            <p id="org-diff-namespace-empty" class="org-diff-scope-note" hidden data-i18n="orgDiff.scope.noNamespaces">No packaged namespaces were found in either org.</p>
+          </section>
+        </div>
+        <p id="org-diff-scope-validation" class="org-diff-scope-validation" aria-live="polite"></p>
+        <div class="org-diff-scope-actions">
+          <button type="button" id="org-diff-scope-cancel" class="secondary" data-i18n="common.cancel">Cancel</button>
+          <button type="button" id="org-diff-scope-confirm" data-i18n="orgDiff.scope.confirm">Retrieve and compare</button>
+        </div>
+      </div>
+    </dialog>
+
+    <script type="module" src="org-differences.js"></script>
+  </body>
+</html>

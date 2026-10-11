@@ -1,0 +1,204 @@
+.app-launcher {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.app-session-header .app-launcher {
+  order: 4;
+}
+
+.tools-header .app-launcher {
+  grid-column: 5;
+  justify-self: end;
+}
+
+.app-launcher-button,
+.app-launcher-close {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  min-height: 36px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #0176d3;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.app-launcher-button:hover,
+.app-launcher-button[aria-expanded="true"],
+.app-launcher-close:hover {
+  border-color: #b8d7f3;
+  background: #eef6ff;
+  color: #014486;
+}
+
+.app-launcher-button:focus-visible,
+.app-launcher-close:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.2);
+}
+
+.app-launcher-button svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.app-launcher-menu {
+  position: fixed;
+  z-index: 1000;
+  top: 48px;
+  right: 12px;
+  left: auto;
+  width: min(440px, calc(100vw - 24px));
+  max-height: min(520px, calc(100vh - 60px));
+  overflow: hidden auto;
+  border: 1px solid #d8dde6;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.18);
+  color: #181818;
+  font-family: "Salesforce Sans", "Segoe UI", Arial, sans-serif;
+  text-align: left;
+}
+
+.app-launcher-menu[hidden] {
+  display: none !important;
+}
+
+.app-launcher-head {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding: 4px 8px 4px 16px;
+  border-bottom: 1px solid #d8dde6;
+  background: #fff;
+}
+
+.app-launcher-head h2 {
+  margin: 0;
+  color: #032d60;
+  font-size: 1rem;
+}
+
+.app-launcher-close {
+  color: #5f6368;
+  font-size: 1.7rem;
+  font-weight: 400;
+}
+
+.app-launcher-app-list {
+  display: grid;
+  gap: 2px;
+  padding: 8px;
+}
+
+.app-launcher-app-link {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 62px;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #181818;
+  text-decoration: none;
+}
+
+.app-launcher-app-link:hover,
+.app-launcher-app-link:focus-visible,
+.app-launcher-app-link.active {
+  border-color: #b8d7f3;
+  background: #eef6ff;
+}
+
+.app-launcher-app-link:focus-visible,
+.app-launcher-tool-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.2);
+}
+
+.app-launcher-app-link > svg {
+  width: 28px;
+  height: 28px;
+  justify-self: center;
+  color: #0176d3;
+}
+
+.app-launcher-app-link > span {
+  display: grid;
+  min-width: 0;
+}
+
+.app-launcher-app-link strong,
+.app-launcher-app-link small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-launcher-app-link strong {
+  color: #032d60;
+  font-size: 0.8125rem;
+}
+
+.app-launcher-app-link small {
+  color: #5f6368;
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.app-launcher-tools {
+  padding: 12px;
+  border-top: 1px solid #d8dde6;
+}
+
+.app-launcher-tools h3 {
+  margin: 0 0 8px;
+  color: #032d60;
+  font-size: 0.8125rem;
+}
+
+.app-launcher-tool-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.app-launcher-tool-link {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 40px;
+  padding: 7px 9px;
+  border: 1px solid #d8dde6;
+  border-radius: 6px;
+  background: #f8fafc;
+  color: #032d60;
+  text-decoration: none;
+}
+
+.app-launcher-tool-link:hover,
+.app-launcher-tool-link:focus-visible,
+.app-launcher-tool-link.active {
+  border-color: #b8d7f3;
+  background: #eef6ff;
+}
+
+.app-launcher-tool-link strong {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

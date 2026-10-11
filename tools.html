@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="icon-32.png">
+    <title>Tools</title>
+    <link rel="stylesheet" href="shared.css">
+  </head>
+  <body>
+    <main class="shell schema-shell">
+      <div class="card">
+        <section class="hero">
+          <div class="eyebrow" data-i18n="app.title">Admin Toolkit for Salesforce</div>
+          <h1 class="title" data-i18n="nav.tools">Tools</h1>
+          <p class="subtitle" data-i18n="tools.choose">Choose a Salesforce metadata administration tool.</p>
+          <div class="status" data-i18n="tools.selectFromHeader">Select a tool from the navigation.</div>
+        </section>
+
+        <section class="section tools-directory-section">
+          <div class="tools-directory-toolbar">
+            <label for="tools-directory-search" data-i18n="tools.search">Search tools</label>
+            <input id="tools-directory-search" type="search" autocomplete="off" spellcheck="false" placeholder="Search by tool name or category" data-i18n-placeholder="tools.search.placeholder">
+          </div>
+          <div id="tools-directory" class="tools-directory" aria-live="polite"></div>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="tools-nav.js"></script>
+  </body>
+</html>

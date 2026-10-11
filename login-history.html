@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="icon-32.png">
+    <title>Login History</title>
+    <link rel="stylesheet" href="shared.css">
+  </head>
+  <body>
+    <main class="shell schema-shell">
+      <div class="card">
+        <section class="hero">
+          <div class="eyebrow" data-i18n="app.title">Admin Toolkit for Salesforce</div>
+          <div id="status" class="status">Waiting for Salesforce session...</div>
+        </section>
+
+        <section class="section audit-controls">
+          <div class="audit-control-row">
+            <div class="field audit-control-field">
+              <label for="login-history-limit" data-i18n="common.rows">Rows</label>
+              <select id="login-history-limit">
+                <option value="200" data-i18n="common.latest200">Latest 200</option>
+                <option value="500" selected data-i18n="common.latest500">Latest 500</option>
+                <option value="1000" data-i18n="common.latest1000">Latest 1000</option>
+                <option value="2000" data-i18n="common.latest2000">Latest 2000</option>
+              </select>
+            </div>
+            <p id="login-history-operation-status" class="tool-operation-status" aria-live="polite"></p>
+          </div>
+        </section>
+
+        <section class="section audit-table-section">
+          <div id="login-history-results" class="results audit-results"></div>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="tools-nav.js"></script>
+    <script type="module" src="login-history.js"></script>
+  </body>
+</html>

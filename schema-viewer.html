@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="icon-32.png">
+    <title>DataDock for Salesforce</title>
+    <link rel="stylesheet" href="shared.css">
+  </head>
+  <body class="metadata-folder-read-only" data-read-only="true">
+    <main class="shell schema-shell app-session-shell metadata-admin-shell">
+      <div class="card">
+        <section class="hero app-session-header metadata-admin-header">
+          <div class="hero-eyebrow-row">
+            <h1 class="eyebrow app-session-page-title"><svg class="app-session-header-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm11 0h-2v2h2v2h-2v2h2v-2h2v2h2v-2h-2v-2h2v-2h-2v2h-2v-2z"/></svg><span data-i18n="tools.metadataFolder">DataDock for Salesforce</span></h1>
+            <nav id="schema-breadcrumb" class="schema-breadcrumb" aria-label="Location" data-i18n-aria-label="schema.location"></nav>
+            <p id="schema-summary" class="schema-summary-inline"></p>
+            <div id="status" class="status" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section class="section schema-viewer-section">
+          <div class="schema-workbench">
+            <aside class="schema-explorer" aria-label="Metadata explorer">
+              <nav class="schema-sidebar-tabs" role="tablist" aria-label="Metadata activity bar">
+                <button type="button" id="schema-tab-explorer" class="schema-sidebar-tab active" role="tab" aria-selected="true" aria-label="Files" title="Files" aria-controls="schema-explorer-panel" data-i18n-aria-label="schema.files" data-i18n-title="schema.files">
+                  <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/>
+                  </svg>
+                </button>
+                <button type="button" id="schema-tab-changed" class="schema-sidebar-tab" role="tab" aria-selected="false" aria-label="Changed Files" title="Changed Files" aria-controls="schema-changed-files-panel" data-i18n-aria-label="schema.changedFiles" data-i18n-title="schema.changedFiles" hidden aria-hidden="true" tabindex="-1">
+                  <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M5 3h10l4 4v14H5V3Zm9 1.8V8h3.2L14 4.8ZM8 11v1.5h8V11H8Zm0 3v1.5h8V14H8Zm0 3v1.5h5V17H8Z"/> <path d="M18.5 13.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Zm.75 2v2.6l1.75 1-.75 1.2-2.5-1.45V15.5h1.5Z"/>
+                  </svg>
+                  <span id="schema-changed-count" class="schema-sidebar-badge" hidden>0</span>
+                </button>
+                <button type="button" id="schema-tab-package" class="schema-sidebar-tab" role="tab" aria-selected="false" aria-label="Package XML" title="Package XML" aria-controls="schema-package-panel" data-i18n-aria-label="schema.packageXml" data-i18n-title="schema.packageXml">
+                  <span class="schema-sidebar-xml-icon" aria-hidden="true">XML</span>
+                </button>
+                <button type="button" id="schema-tab-change-sets" class="schema-sidebar-tab" role="tab" aria-selected="false" aria-label="Outbound Change Sets" title="Outbound Change Sets" aria-controls="schema-change-sets-panel" data-i18n-aria-label="schema.changeSets" data-i18n-title="schema.changeSets">
+                  <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6h-2V9H5v10h6v2H5a2 2 0 0 1-2-2V5Zm2 2h14V5H5v2Z"/><path d="M17.6 21.4l-3-3 1.4-1.4 1.6 1.6 3.6-3.6 1.4 1.4-5 5Z"/>
+                  </svg>
+                  <span id="schema-change-set-count" class="schema-sidebar-badge" hidden>0</span>
+                </button>
+
+                <div class="schema-sidebar-tab-spacer"></div>
+
+                <button type="button" id="schema-details-toggle" class="schema-sidebar-tab schema-rail-action" aria-expanded="true" aria-controls="schema-detail" aria-label="Toggle file details" title="File details" data-i18n-aria-label="schema.toggleDetails" data-i18n-title="schema.details">
+                  <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M13 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10l-7-7Zm0 2.5L17.5 10H13V5.5ZM8 13h8v1.5H8V13Zm0 3h8v1.5H8V16Zm0-6h3v1.5H8V10Z"/>
+                  </svg>
+                </button>
+                <button type="button" id="schema-reload-folder-tree" class="schema-sidebar-tab schema-rail-action" aria-label="Reload Workspace" title="Reload Workspace" data-i18n-aria-label="schema.reloadFolderTree" data-i18n-title="schema.reloadFolderTree">
+                  <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35Z"/>
+                  </svg>
+                </button>
+              </nav>
+
+              <section id="schema-explorer-panel" class="schema-sidebar-tab-panel active" role="tabpanel" aria-labelledby="schema-tab-explorer">
+                <div class="schema-sidebar-panel-head">
+                  <span data-i18n="schema.files">Files</span>
+                  <div class="schema-panel-head-menus">
+                    <details id="schema-workspace-folders" class="schema-search-type-menu schema-workspace-menu schema-metadata-folder-menu">
+                      <summary><span id="schema-workspace-folders-summary" data-i18n="schemaUi.workspaceFolders">Workspace Folders</span></summary>
+                      <div id="schema-workspace-folders-options" class="schema-search-type-options"></div>
+                    </details>
+                    <details id="schema-workspace-namespaces" class="schema-search-type-menu schema-workspace-menu schema-namespace-menu">
+                      <summary><span id="schema-workspace-namespaces-summary" data-i18n="schemaUi.namespaces">Namespaces</span></summary>
+                      <div id="schema-workspace-namespaces-options" class="schema-search-type-options"></div>
+                    </details>
+                  </div>
+                  <div class="schema-sidebar-head-actions schema-files-head-actions" aria-label="Files navigation">
+                    <button type="button" id="schema-files-nav-back" class="schema-sidebar-icon-button" aria-label="Back" title="Back" disabled>
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M20 11H7.8l5.6-5.6L12 4l-8 8 8 8 1.4-1.4L7.8 13H20v-2Z"/>
+                      </svg>
+                    </button>
+                    <button type="button" id="schema-files-nav-forward" class="schema-sidebar-icon-button" aria-label="Forward" title="Forward" disabled>
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M4 11h12.2l-5.6-5.6L12 4l8 8-8 8-1.4-1.4 5.6-5.6H4v-2Z"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="schema-explorer-filter schema-search-view">
+                  <div class="schema-explorer-search-row schema-search-input-row">
+                    <div class="schema-file-filter-field">
+                      <input id="schema-file-filter" type="search" aria-label="Find file or folder API name, label" placeholder="Find file or folder API name, label" autocomplete="off" spellcheck="false" data-i18n-aria-label="schema.findFilesPlaceholder" data-i18n-placeholder="schema.findFilesPlaceholder">
+                      <div id="schema-file-filter-suggestions" class="data-export-inline-suggestions schema-file-inline-suggestions" hidden></div>
+                    </div>
+                    <button type="button" id="schema-file-filter-button" class="secondary schema-search-run-button" title="Find file or folder API name, label" aria-label="Find file or folder API name, label" data-i18n-title="schema.findFilesPlaceholder" data-i18n-aria-label="schema.findFilesPlaceholder">
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="m21 19.6-5.3-5.3a7.5 7.5 0 1 0-1.4 1.4l5.3 5.3L21 19.6ZM5 10a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div id="schema-tree" class="schema-tree schema-tree-full"></div>
+              </section>
+
+              <section id="schema-package-panel" class="schema-sidebar-tab-panel" role="tabpanel" aria-labelledby="schema-tab-package" hidden>
+                <div class="schema-sidebar-panel-head">
+                  <span data-i18n="schema.packageXml">Package XML</span>
+                </div>
+                <div id="schema-package-tree" class="schema-tree schema-tree-full schema-package-tree"></div>
+              </section>
+
+              <section id="schema-changed-files-panel" class="schema-sidebar-tab-panel" role="tabpanel" aria-labelledby="schema-tab-changed" hidden>
+                <div class="schema-sidebar-panel-head">
+                  <label class="schema-changed-check-all">
+                    <input type="checkbox" id="schema-changed-check-all" aria-label="Select all changed files" data-i18n-aria-label="schema.changedFiles">
+                    <span data-i18n="schema.changedFiles">Changed Files</span>
+                  </label>
+                  <div class="schema-changed-head-actions">
+                    <button type="button" id="schema-validate-selected-changed" class="schema-sidebar-clear-button" data-i18n="schemaUi.validateSelected" disabled>Validate Selected 0</button>
+                    <button type="button" id="schema-deploy-selected-changed" class="schema-sidebar-clear-button" disabled data-i18n="schema.deploySelected">Deploy Selected 0</button>
+                    <button type="button" id="schema-discard-selected-changed" class="schema-sidebar-clear-button" disabled data-i18n="schema.discardSelected">Discard Change Selected 0</button>
+                  </div>
+                </div>
+                <div id="schema-changed-files-list" class="schema-tree schema-changed-files-list"></div>
+              </section>
+
+              <section id="schema-change-sets-panel" class="schema-sidebar-tab-panel" role="tabpanel" aria-labelledby="schema-tab-change-sets" hidden>
+                <div class="schema-sidebar-panel-head">
+                  <span data-i18n="schema.changeSets">Outbound Change Sets</span>
+                  <button type="button" id="schema-change-sets-refresh" class="schema-sidebar-clear-button" data-i18n="common.refresh">Refresh</button>
+                </div>
+                <p class="schema-change-set-help" data-i18n="schema.changeSetHelp">Select an outbound change set to retrieve and inspect its source here.</p>
+                <div id="schema-change-set-list" class="schema-tree schema-change-set-list"></div>
+                <p id="schema-change-set-summary" class="schema-change-set-summary" role="status" aria-live="polite" data-i18n="schema.changeSetSelect">Select a change set to view its source.</p>
+                <div id="schema-change-set-source-panel">
+                  <div id="schema-change-set-source-list" class="schema-tree schema-change-set-source-list"></div>
+                </div>
+              </section>
+            </aside>
+
+            <div id="schema-column-resizer" class="schema-column-resizer" role="separator" aria-orientation="vertical" aria-label="Resize the file details panel" tabindex="0"></div>
+            <section id="schema-detail" class="schema-detail-panel" aria-live="polite"></section>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="schema-viewer.js"></script>
+  </body>
+</html>

@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="icon-32.png">
+    <title>SheetD</title>
+    <link rel="stylesheet" href="force-sheet.css">
+    <link rel="stylesheet" href="force-sheet-univer.bundle.css">
+  </head>
+  <body>
+    <div class="fs-shell">
+
+      <!-- Header: icon + breadcrumb  ····  connected status -->
+      <header class="fs-header">
+        <div class="fs-header-left">
+          <img class="fs-header-icon" src="icon-32.png" alt="" aria-hidden="true">
+          <nav id="fs-breadcrumb" class="fs-breadcrumb" aria-label="Location" data-i18n-aria-label="dinaSheet.aria.location">
+            <span class="fs-crumb fs-crumb-root">SheetD</span>
+          </nav>
+        </div>
+        <div class="fs-header-right">
+          <div id="fs-obj-actions" class="fs-obj-actions" hidden>
+            <label id="fs-obj-picklist-wrap" class="fs-obj-picklist-wrap" hidden>
+              <span id="fs-obj-picklist-label" class="fs-obj-picklist-label"></span>
+              <select id="fs-obj-picklist" class="fs-obj-picklist" aria-label="Pick a value for the selected cell" data-i18n-aria-label="dinaSheet.aria.selectedCellPicklist"></select>
+            </label>
+          </div>
+          <span id="fs-status" class="fs-status"></span>
+          <span id="fs-org-chip" class="fs-org-chip" hidden></span>
+          <span id="fs-connection" class="fs-connection" hidden></span>
+          <button type="button" id="fs-details-toggle" class="fs-details-toggle"
+                  aria-expanded="false" aria-controls="fs-details"
+                  title="File details" data-i18n-title="dinaSheet.details.title"
+                  aria-label="Toggle file details" data-i18n-aria-label="dinaSheet.aria.toggleDetails">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M13 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10l-7-7Zm0 2.5L17.5 10H13V5.5ZM8 13h8v1.5H8V13Zm0 3h8v1.5H8V16Zm0-6h3v1.5H8V10Z"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Body: icon rail + (overlay panel over the sheet) -->
+      <div class="fs-body">
+
+        <!-- Icon activity rail: panels on top, actions at the bottom -->
+        <nav id="fs-nav-bar" class="fs-rail" aria-label="Panels" data-i18n-aria-label="dinaSheet.aria.panels" data-testid="fs-rail">
+          <button type="button" class="fs-nav-tab" data-panel="workspace" data-testid="rail-workspace"
+                  aria-label="Salesforce data" data-i18n-aria-label="dinaSheet.aria.salesforceData" title="Salesforce data" data-i18n-title="dinaSheet.aria.salesforceData">
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <rect x="1" y="1" width="5" height="14" rx="1.5" fill="currentColor"/>
+              <rect x="8" y="1" width="7" height="14" rx="1.5" fill="currentColor" opacity="0.3"/>
+            </svg>
+          </button>
+          <button type="button" class="fs-nav-tab" data-panel="import" data-testid="rail-import"
+                  aria-label="Import" data-i18n-aria-label="dinaSheet.aria.import" title="Import" data-i18n-title="dinaSheet.aria.import">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+            </svg>
+          </button>
+          <button type="button" id="fs-nav-audit" class="fs-nav-tab" data-action="audit" data-testid="rail-audit"
+                  aria-label="Update audit log" data-i18n-aria-label="dinaSheet.aria.audit" title="Update audit log" data-i18n-title="dinaSheet.aria.audit">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M5 3h10l4 4v14H5V3Zm9 1.8V8h3.2L14 4.8ZM8 11v1.5h8V11H8Zm0 3v1.5h8V14H8Zm0 3v1.5h5V17H8Z"/>
+              <path fill="currentColor" d="M18.5 13.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Zm.75 2v2.6l1.75 1-.75 1.2-2.5-1.45V15.5h1.5Z"/>
+            </svg>
+          </button>
+          <div class="fs-rail-spacer"></div>
+          <button type="button" id="fs-refresh" class="fs-refresh-nav-btn" hidden aria-label="Refresh" title="Refresh" data-i18n-title="common.refresh" data-testid="rail-refresh">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35Z"/></svg>
+          </button>
+          <button type="button" id="fs-settings" class="fs-nav-tab fs-settings-nav-btn"
+                  data-action="settings" data-testid="rail-settings"
+                  aria-label="Settings" data-i18n-aria-label="forceSheet.settings.open"
+                  title="Settings" data-i18n-title="forceSheet.settings.open">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7.2 7.2 0 0 0-1.62-.94L14.38 2.8a.49.49 0 0 0-.49-.4h-3.84a.49.49 0 0 0-.49.4L9.2 5.32c-.58.24-1.12.55-1.63.94l-2.38-.96a.49.49 0 0 0-.61.22L2.66 8.84a.5.5 0 0 0 .12.64l2.03 1.58c-.05.31-.08.64-.08.96 0 .31.03.62.07.92l-2.02 1.58a.5.5 0 0 0-.12.64l1.92 3.32c.12.22.38.31.61.22l2.38-.96c.5.39 1.05.71 1.63.95l.36 2.51c.04.24.24.4.49.4h3.84c.25 0 .45-.16.49-.4l.36-2.52c.58-.24 1.12-.55 1.62-.94l2.39.96c.23.09.49 0 .61-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.02-1.58ZM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5Z"/>
+            </svg>
+          </button>
+        </nav>
+
+        <!-- Main wrap: the sheet fills it; the panel slides OVER it -->
+        <div class="fs-main-wrap">
+
+        <!-- Left panel (overlay; content switches with rail) -->
+        <aside id="fs-left-panel" class="fs-left-panel" data-testid="fs-panel" hidden>
+
+          <!-- SALESFORCE DATA panel -->
+          <div id="fs-panel-workspace" class="fs-panel">
+            <div class="fs-ws-toolbar">
+              <div class="fs-ws-filter-wrap">
+                <div class="fs-ws-filter-input-wrap">
+                  <input type="search" id="fs-ws-filter" class="fs-ws-filter"
+                         placeholder="Filter favorites, objects, and reports…"
+                         data-i18n-placeholder="forceSheet.workspace.filterOrgData"
+                         autocomplete="off" spellcheck="false">
+                  <span id="fs-ws-filter-spinner" class="fs-ws-spinner" hidden role="status" aria-label="Filtering" data-i18n-aria-label="dinaSheet.aria.filtering"></span>
+                </div>
+                <button type="button" id="fs-ws-search" class="fs-ws-search-btn" data-i18n="common.search">Search</button>
+                <button type="button" id="fs-ws-clear" class="fs-ws-clear-btn" data-i18n="common.clear">Clear</button>
+              </div>
+              <button type="button" id="fs-ws-close" class="fs-ws-close-btn" title="Close sidebar" data-i18n-title="dinaSheet.aria.closeSidebar" aria-label="Close sidebar" data-i18n-aria-label="dinaSheet.aria.closeSidebar">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+              </button>
+            </div>
+            <div id="fs-ws-tree" class="fs-ws-tree" role="tree" aria-label="Salesforce objects and reports" data-i18n-aria-label="dinaSheet.aria.dataTree"></div>
+          </div>
+
+          <!-- IMPORT panel -->
+          <div id="fs-panel-import" class="fs-panel" hidden>
+            <div class="fs-import-mode-bar">
+              <button type="button" class="fs-mode-tab active" data-mode="query" data-i18n="forceSheet.mode.query">Query</button>
+              <button type="button" class="fs-mode-tab" data-mode="report" data-i18n="forceSheet.mode.report">Report</button>
+              <button type="button" class="fs-mode-tab" data-mode="upload" data-i18n="forceSheet.mode.upload">Upload</button>
+            </div>
+
+            <!-- SOQL bar (query mode) — 5-row layout -->
+            <div id="fs-soql-bar" class="fs-soql-bar">
+              <!-- Row 1: Object selection (custom suggestion dropdown) -->
+              <div class="fs-import-row">
+                <input id="fs-object-input" class="fs-import-input"
+                       type="search"
+                       placeholder="Object (e.g. Account)"
+                       data-i18n-placeholder="forceSheet.object.placeholder"
+                       autocomplete="off" spellcheck="false">
+              </div>
+              <!-- Row 2: Field selection (custom suggestion dropdown) -->
+              <div class="fs-import-row">
+                <input id="fs-field-input" class="fs-import-input"
+                       type="search"
+                       placeholder="Add field…"
+                       data-i18n-placeholder="forceSheet.field.placeholder"
+                       autocomplete="off" spellcheck="false">
+              </div>
+              <!-- Row 3: Query textarea -->
+              <div class="fs-import-row fs-import-row-grow">
+                <div class="fs-soql-textarea-wrap">
+                  <textarea
+                    id="fs-soql-input"
+                    class="fs-soql-input"
+                    rows="6"
+                    spellcheck="false"
+                    placeholder="SELECT Id, Name FROM Account LIMIT 200"
+                    data-i18n-placeholder="forceSheet.soqlPlaceholder"
+                  ></textarea>
+                  <div id="fs-soql-field-suggestions" class="fs-soql-field-suggestions" hidden></div>
+                </div>
+              </div>
+              <div class="fs-import-row">
+                <select id="fs-query-target" class="fs-upload-target" aria-label="Query target" data-i18n-aria-label="dinaSheet.aria.queryTarget">
+                  <option value="current-sheet" data-i18n="forceSheet.upload.target.currentSheet">Upload to current sheet</option>
+                  <option value="new-sheet" data-i18n="forceSheet.upload.target.newSheet">Upload to new sheet</option>
+                </select>
+              </div>
+              <!-- Row 4: Run -->
+              <div class="fs-import-row fs-run-row">
+                <button type="button" id="fs-soql-run" class="fs-soql-run-btn" disabled data-testid="run-query">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+                  <span data-i18n="forceSheet.run">Run</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Report bar (report mode): input, target, then Run -->
+            <div id="fs-report-bar" class="fs-report-bar" hidden>
+              <div class="fs-import-row">
+                <input
+                  type="text"
+                  id="fs-report-input"
+                  class="fs-report-input"
+                  spellcheck="false"
+                  autocomplete="off"
+                  placeholder="Report name or ID…"
+                  data-i18n-placeholder="forceSheet.report.placeholder"
+                >
+              </div>
+              <div class="fs-import-row">
+                <select id="fs-report-target" class="fs-upload-target" aria-label="Report target" data-i18n-aria-label="dinaSheet.aria.reportTarget">
+                  <option value="current-sheet" data-i18n="forceSheet.upload.target.currentSheet">Upload to current sheet</option>
+                  <option value="new-sheet" data-i18n="forceSheet.upload.target.newSheet">Upload to new sheet</option>
+                </select>
+              </div>
+              <div class="fs-import-row fs-run-row">
+                <button type="button" id="fs-report-run" class="fs-soql-run-btn" disabled>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+                  <span data-i18n="forceSheet.run">Run</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Upload bar (upload mode): file row → target pulldown row → Run row -->
+            <div id="fs-upload-bar" class="fs-upload-bar" hidden>
+              <div class="fs-import-row">
+                <label class="fs-upload-label" for="fs-upload-input">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/></svg>
+                  <span id="fs-upload-filename" data-i18n="forceSheet.upload.noFile">No file chosen</span>
+                </label>
+                <input type="file" id="fs-upload-input" accept=".csv,.xlsx,.xls" style="display:none">
+              </div>
+              <div class="fs-import-row">
+                <select id="fs-upload-target" class="fs-upload-target" aria-label="Upload target" data-i18n-aria-label="dinaSheet.aria.uploadTarget">
+                  <option value="current-sheet" data-i18n="forceSheet.upload.target.currentSheet">Upload to current sheet</option>
+                  <option value="new-sheet" data-i18n="forceSheet.upload.target.newSheet">Upload to new sheet</option>
+                </select>
+              </div>
+              <div class="fs-import-row">
+                <button type="button" id="fs-upload-load" class="fs-soql-run-btn" disabled data-testid="run-upload">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+                  <span data-i18n="forceSheet.run">Run</span>
+                </button>
+              </div>
+            </div>
+
+          </div><!-- /#fs-panel-import -->
+
+          <!-- Resize handle (right edge of the overlay panel) -->
+          <div id="fs-ws-handle" class="fs-ws-handle" aria-hidden="true"></div>
+        </aside><!-- /#fs-left-panel -->
+
+        <!-- Main: sheet grid + controls bar -->
+        <div class="fs-main">
+
+          <!-- Sheet content — Univer renders its toolbar + grid + native sheet tabs here -->
+          <div class="fs-content">
+            <div id="fs-sheet-empty" class="fs-sheet-empty">
+              <div class="fs-sheet-empty-inner">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm2 0v2h14V5H5Zm0 4v10h14V9H5Zm2 2h10v1.5H7V11Zm0 3h7v1.5H7V14Zm0 3h4v1.5H7V17Z"/></svg>
+                <p data-i18n="forceSheet.emptyHint">Open a Salesforce tab to connect and start querying.</p>
+              </div>
+            </div>
+            <div id="fs-sheet-container" hidden></div>
+            <!-- In-grid loading/streaming indicator (non-interactive) -->
+            <div id="fs-loading-overlay" class="fs-loading-overlay" hidden>
+              <div class="fs-loading-pill">
+                <span class="fs-loading-spinner" aria-hidden="true"></span>
+                <span id="fs-loading-text"></span>
+              </div>
+            </div>
+            <!-- Floating stream controls (R7: controls bar removed) -->
+            <div class="fs-stream-chip">
+              <button type="button" id="fs-stop" class="fs-stop-btn" hidden data-i18n="forceSheet.stop">&#9632; Stop</button>
+              <button type="button" id="fs-resume" class="fs-resume-btn" hidden data-i18n="forceSheet.resume">&#9654; Resume</button>
+            </div>
+          </div>
+
+          <!-- Dismissible error banner (full message, unlike the header status) -->
+          <div id="fs-error-banner" class="fs-error-banner" role="alert" hidden>
+            <span class="fs-error-banner-icon" aria-hidden="true">⚠</span>
+            <div class="fs-error-banner-text">
+              <div id="fs-error-message" class="fs-error-message"></div>
+              <code id="fs-error-detail" class="fs-error-detail" hidden></code>
+            </div>
+            <div class="fs-error-banner-actions">
+              <button type="button" id="fs-error-retry" class="fs-error-retry-btn" hidden data-i18n="common.retry">Retry</button>
+              <button type="button" id="fs-error-dismiss" class="fs-error-dismiss-btn" aria-label="Dismiss" data-i18n-aria-label="dinaSheet.aria.dismiss">✕</button>
+            </div>
+          </div>
+
+        </div><!-- /.fs-main -->
+        </div><!-- /.fs-main-wrap -->
+
+        <!-- File details: slides in from the right on "View file details" -->
+        <aside id="fs-details" class="fs-details" hidden aria-labelledby="fs-details-title">
+          <header class="fs-details-head">
+            <h2 id="fs-details-title" class="fs-details-title" data-i18n="dinaSheet.details.title">File details</h2>
+            <button type="button" id="fs-details-close" class="fs-details-close" aria-label="Close file details" data-i18n-aria-label="dinaSheet.aria.closeDetails">✕</button>
+          </header>
+          <div id="fs-details-body" class="fs-details-body"></div>
+        </aside>
+      </div><!-- /.fs-body -->
+
+    </div>
+
+    <dialog id="fs-settings-modal" class="fs-modal fs-settings-modal" aria-labelledby="fs-settings-title">
+      <header class="fs-settings-head">
+        <div>
+          <h2 id="fs-settings-title" data-i18n="forceSheet.settings.title">Settings</h2>
+          <p data-i18n="forceSheet.settings.subtitle">Personalize SheetD for this browser.</p>
+        </div>
+        <button type="button" id="fs-settings-close" class="fs-settings-close"
+                aria-label="Close settings" data-i18n-aria-label="forceSheet.settings.close">✕</button>
+      </header>
+      <div class="fs-settings-body">
+        <section class="fs-settings-section" aria-labelledby="fs-user-settings-title">
+          <h3 id="fs-user-settings-title" data-i18n="forceSheet.settings.userSettings">User settings</h3>
+          <div class="fs-setting-row">
+            <div class="fs-setting-copy">
+              <label for="fs-settings-language" data-i18n="forceSheet.settings.language">Language</label>
+              <p data-i18n="forceSheet.settings.languageHelp">Choose the language used by SheetD. The page reloads after Save.</p>
+            </div>
+            <select id="fs-settings-language" class="fs-setting-select" aria-label="Language" data-i18n-aria-label="forceSheet.settings.language">
+              <option value="en" data-i18n="language.en">EN - English</option>
+              <option value="jp" data-i18n="language.jp">JP - 日本語</option>
+            </select>
+          </div>
+        </section>
+      </div>
+      <footer class="fs-settings-actions">
+        <button type="button" id="fs-settings-cancel" class="fs-modal-btn" data-i18n="forceSheet.settings.cancel">Cancel</button>
+        <button type="button" id="fs-settings-save" class="fs-modal-btn fs-modal-btn-primary" data-i18n="forceSheet.settings.save">Save</button>
+      </footer>
+    </dialog>
+
+    <!-- The 10 MB Univer bundle is loaded on demand by force-sheet.js
+         (loadUniverBundle) once a Salesforce session is established, so the
+         panel shell + workspace render without waiting on it. -->
+    <script type="module" src="force-sheet.js"></script>
+  </body>
+</html>

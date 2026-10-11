@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="icon-32.png">
+    <title>Data Export</title>
+    <link rel="stylesheet" href="shared.css">
+  </head>
+  <body class="data-export-page">
+    <main class="shell schema-shell data-export-shell">
+      <div class="card">
+        <section class="hero">
+          <div class="eyebrow" data-i18n="app.title">Admin Toolkit for Salesforce</div>
+          <div id="status" class="status">Waiting for Salesforce session...</div>
+        </section>
+
+        <section class="section grid data-step-flow">
+          <div class="data-step">
+            <div class="data-step-label">Step 1</div>
+            <div class="data-export-main-row">
+              <div class="field">
+                <label for="export-method">Export Source</label>
+                <select id="export-method">
+                  <option value="soql">SOQL Query</option>
+                  <option value="sosl">SOSL Query</option>
+                  <option value="graphql">GraphQL Query</option>
+                  <option value="report">Report</option>
+                </select>
+              </div>
+              <div class="field" id="target-field">
+                <label id="target-label" for="target-name">Object API Name</label>
+                <input id="target-name" type="text" list="target-options" placeholder="Account" autocomplete="off" spellcheck="false">
+                <datalist id="target-options"></datalist>
+              </div>
+              <div class="field" id="field-picker-field">
+                <label for="field-picker">Field API Name</label>
+                <input id="field-picker" type="text" list="field-options" placeholder="Select field API name" autocomplete="off" spellcheck="false">
+                <datalist id="field-options"></datalist>
+              </div>
+            </div>
+          </div>
+
+          <div class="data-step">
+            <div class="data-step-label">Step 2</div>
+            <div class="grid two data-export-options-row">
+              <div class="field" id="report-format-field" hidden>
+                <label for="report-format">Format</label>
+                <select id="report-format">
+                  <option value="csv">CSV</option>
+                  <option value="excel">Excel</option>
+                  <option value="json">JSON</option>
+                </select>
+              </div>
+              <p id="report-csv-warning" class="small schema-status data-export-warning" hidden>CSV exports use the synchronous report run and output raw record rows only. Grouping, summary layout, and formatted report grouping are not preserved. Salesforce returns up to 2,000 rows.</p>
+              <p id="report-joined-warning" class="small schema-status data-export-warning" hidden>CSV is not available for joined reports because joined report blocks and grouping cannot be represented as one raw CSV record list. Use Excel to keep the formatted report layout, or JSON to inspect the report response.</p>
+            </div>
+
+            <div class="field data-export-query-field" id="request-field">
+              <label id="request-label" for="request-body">SOQL Query</label>
+              <textarea id="request-body" rows="10" spellcheck="false">SELECT Id, Name FROM Account LIMIT 200</textarea>
+              <div id="query-field-suggestions" class="data-export-inline-suggestions" hidden></div>
+            </div>
+          </div>
+
+          <div class="data-step">
+            <div class="data-step-label">Step 3</div>
+            <div class="button-row">
+              <button type="button" id="run-query">Run Export</button>
+              <button type="button" id="sample-body" class="secondary" data-i18n="rest.sampleRequestBody">Sample Request Body</button>
+              <button type="button" id="view-csv" class="secondary">CSV Grid</button>
+              <button type="button" id="view-json" class="secondary">JSON</button>
+              <button type="button" id="copy-response" class="secondary">Copy</button>
+              <button type="button" id="download-csv" class="secondary" hidden>Download CSV</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Response</h2>
+          <p id="response-summary" class="small schema-status">Run an export to see CSV grid results.</p>
+          <p id="export-open-url-row" class="small schema-status export-open-url" hidden>File URL: <a id="export-open-url" href="#" target="_blank" rel="noopener"></a></p>
+          <div class="results">
+            <div id="table-results"></div>
+            <pre id="raw-results" hidden>Run an export to see the JSON response.</pre>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="tools-nav.js"></script>
+    <script type="module" src="data-export.js"></script>
+  </body>
+</html>

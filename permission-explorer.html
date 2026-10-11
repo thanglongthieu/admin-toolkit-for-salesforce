@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="icon-32.png">
+    <title>Permission Explorer</title>
+    <link rel="stylesheet" href="shared.css">
+  </head>
+  <body>
+    <main class="shell app-session-shell permission-explorer-shell">
+      <div class="card">
+        <section class="hero app-session-header permission-explorer-header">
+          <h1 class="eyebrow app-session-page-title permission-explorer-page-title"><svg class="app-session-header-icon permission-explorer-header-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1 4 4.5v6c0 4.7 3.4 9.1 8 10.5 4.6-1.4 8-5.8 8-10.5v-6L12 1Zm0 6a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Zm0 11c-1.9-.6-3.6-2-4.6-3.8.5-1.3 2.5-2 4.6-2s4.1.7 4.6 2c-1 1.8-2.7 3.2-4.6 3.8Z"/></svg><span data-i18n="permissionExplorer.headerTitle">Permission Explorer</span></h1>
+          <div id="permission-explorer-session-status" class="status" aria-live="polite">Waiting for Salesforce session...</div>
+        </section>
+
+        <section class="section permission-explorer-panel">
+          <div class="permission-explorer-controls">
+            <label class="permission-explorer-control-field permission-explorer-user-control">
+              <span data-i18n="permissionExplorer.user">User</span>
+              <span class="permission-explorer-input-wrap">
+                <input id="permission-explorer-user" type="text" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="permission-explorer-user-suggestions" placeholder="Search by name or username" data-i18n-placeholder="permissionExplorer.user.placeholder" aria-label="Search Salesforce users" data-i18n-aria-label="permissionExplorer.user.aria">
+                <span id="permission-explorer-user-suggestions" class="permission-explorer-suggestions" role="listbox" hidden></span>
+              </span>
+            </label>
+            <label class="permission-explorer-control-field permission-explorer-compare-user-control">
+              <span data-i18n="permissionExplorer.compareUser">Compare with user (optional)</span>
+              <span class="permission-explorer-input-wrap">
+                <input id="permission-explorer-compare-user" type="text" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="permission-explorer-compare-user-suggestions" placeholder="Search a second user" data-i18n-placeholder="permissionExplorer.compareUser.placeholder" aria-label="Search a second Salesforce user" data-i18n-aria-label="permissionExplorer.compareUser.aria">
+                <span id="permission-explorer-compare-user-suggestions" class="permission-explorer-suggestions" role="listbox" hidden></span>
+              </span>
+            </label>
+            <label class="permission-explorer-control-field permission-explorer-object-control">
+              <span data-i18n="permissionExplorer.object">Object</span>
+              <span class="permission-explorer-input-wrap">
+                <input id="permission-explorer-object" type="text" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="permission-explorer-object-suggestions" placeholder="All objects" data-i18n-placeholder="permissionExplorer.object.placeholder" aria-label="Salesforce object API name" data-i18n-aria-label="permissionExplorer.object.aria">
+                <span id="permission-explorer-object-suggestions" class="permission-explorer-suggestions" role="listbox" hidden></span>
+              </span>
+            </label>
+            <label class="permission-explorer-control-field permission-explorer-field-control">
+              <span data-i18n="permissionExplorer.field">Field (optional)</span>
+              <input id="permission-explorer-field" type="text" autocomplete="off" placeholder="Field API name" data-i18n-placeholder="permissionExplorer.field.placeholder" aria-label="Salesforce field API name" data-i18n-aria-label="permissionExplorer.field.aria">
+            </label>
+            <div class="permission-explorer-control-actions">
+              <button type="button" id="permission-explorer-explain" data-i18n="permissionExplorer.explain">Explain access</button>
+              <button type="button" id="permission-explorer-compare" class="secondary" data-i18n="permissionExplorer.compare">Compare users</button>
+              <button type="button" id="permission-explorer-reset" class="secondary" data-i18n="permissionExplorer.reset">Reset</button>
+            </div>
+          </div>
+
+          <div id="permission-explorer-status" class="status permission-explorer-status" aria-live="polite"></div>
+
+          <section id="permission-explorer-inventory" class="permission-explorer-inventory" hidden aria-labelledby="permission-explorer-inventory-title">
+            <div class="permission-explorer-section-title">
+              <h2 id="permission-explorer-inventory-title" data-i18n="permissionExplorer.inventory.title">Assigned access inventory</h2>
+              <span data-i18n="permissionExplorer.inventory.note">Effective grants from the selected user's profile, permission sets, and permission set groups.</span>
+            </div>
+            <div id="permission-explorer-inventory-summary" class="permission-explorer-compare-summary"></div>
+            <div id="permission-explorer-inventory-sources" class="permission-explorer-inventory-sources"></div>
+            <div id="permission-explorer-inventory-categories" class="permission-explorer-inventory-categories"></div>
+          </section>
+
+          <section id="permission-explorer-compare-results" class="permission-explorer-compare-results" hidden aria-labelledby="permission-explorer-compare-title">
+            <div class="permission-explorer-section-title">
+              <h2 id="permission-explorer-compare-title" data-i18n="permissionExplorer.compare.title">Access differences</h2>
+              <span id="permission-explorer-compare-note" data-i18n="permissionExplorer.compare.note">Leave Object blank to compare all assigned access areas. Only differences are shown; record sharing remains separate.</span>
+            </div>
+            <div id="permission-explorer-compare-summary" class="permission-explorer-compare-summary"></div>
+            <div class="permission-explorer-table-wrap">
+              <table id="permission-explorer-compare-table" class="permission-explorer-matrix"></table>
+            </div>
+          </section>
+
+          <div id="permission-explorer-results" class="permission-explorer-results" hidden>
+            <div id="permission-explorer-stats" class="permission-explorer-stats" hidden></div>
+
+            <div id="permission-explorer-answer" class="permission-explorer-answer" hidden>
+              <div class="permission-explorer-answer-head">
+                <span id="permission-explorer-verdict" class="permission-explorer-verdict"></span>
+                <h2 id="permission-explorer-target"></h2>
+                <span id="permission-explorer-target-note" class="permission-explorer-target-note"></span>
+              </div>
+              <div id="permission-explorer-perm-grid" class="permission-explorer-perm-grid"></div>
+              <div id="permission-explorer-denied" class="permission-explorer-denied" hidden></div>
+              <div id="permission-explorer-field-note" class="permission-explorer-info-row" hidden></div>
+            </div>
+
+            <div class="permission-explorer-scope-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 1 21h22L12 2Zm1 14h-2v2h2v-2Zm0-6h-2v4h2v-4Z"/></svg>
+              <div>
+                <strong data-i18n="permissionExplorer.scope.title">This explains assigned profile and permission-set access — not which records the user can see.</strong>
+                <p data-i18n="permissionExplorer.scope.body">The inventory covers permission metadata returned by the org. Record-level visibility comes from org-wide defaults, role hierarchy, sharing rules, manual and team shares, and territories; those remain outside this answer.</p>
+              </div>
+            </div>
+
+            <div id="permission-explorer-matrix-section" class="permission-explorer-matrix-section" hidden>
+              <div class="permission-explorer-section-title">
+                <h2 data-i18n="permissionExplorer.matrix.title">Objects this user can touch</h2>
+                <span id="permission-explorer-matrix-note"></span>
+              </div>
+              <div class="permission-explorer-table-wrap">
+                <table id="permission-explorer-matrix" class="permission-explorer-matrix"></table>
+              </div>
+            </div>
+
+            <div id="permission-explorer-fields-section" class="permission-explorer-matrix-section" hidden>
+              <div class="permission-explorer-section-title">
+                <h2 data-i18n="permissionExplorer.fields.title">Fields</h2>
+                <span id="permission-explorer-fields-note"></span>
+              </div>
+              <div class="permission-explorer-table-wrap">
+                <table id="permission-explorer-fields" class="permission-explorer-matrix"></table>
+              </div>
+            </div>
+
+            <div id="permission-explorer-evidence-section" class="permission-explorer-evidence-section" hidden>
+              <div class="permission-explorer-section-title">
+                <h2 data-i18n="permissionExplorer.evidence.title">Evidence</h2>
+                <span data-i18n="permissionExplorer.evidence.note">Only records assigned to the selected user are shown.</span>
+              </div>
+              <div id="permission-explorer-evidence" class="permission-explorer-evidence"></div>
+            </div>
+
+            <div class="permission-explorer-export-row">
+              <button type="button" id="permission-explorer-export-json" class="secondary" data-i18n="permissionExplorer.export.json">Export JSON</button>
+              <button type="button" id="permission-explorer-export-markdown" class="secondary" data-i18n="permissionExplorer.export.markdown">Export Markdown</button>
+              <button type="button" id="permission-explorer-export-csv" class="secondary" data-i18n="permissionExplorer.export.csv" hidden>Export CSV</button>
+              <span class="permission-explorer-export-note" data-i18n="permissionExplorer.export.note">Exports contain the answer and evidence only — no session token, no unrelated users.</span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="permission-explorer.js"></script>
+  </body>
+</html>

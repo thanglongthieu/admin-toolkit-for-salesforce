@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="icon-32.png">
+    <title>REST API</title>
+    <link rel="stylesheet" href="shared.css">
+  </head>
+  <body class="rest-api-page">
+    <main class="shell schema-shell rest-api-shell">
+      <div class="card">
+        <section class="hero">
+          <div class="eyebrow" data-i18n="app.title">Admin Toolkit for Salesforce</div>
+          <div id="status" class="status">Waiting for Salesforce session...</div>
+        </section>
+
+        <section class="section grid">
+          <div class="grid rest-request-row">
+            <div class="field">
+              <label for="method" data-i18n="rest.method">Method</label>
+              <select id="method">
+                <option>GET</option>
+                <option>POST</option>
+                <option>PATCH</option>
+                <option>DELETE</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="path" data-i18n="rest.apiPath">API Path</label>
+              <input id="path" type="text" value="/services/data/v66.0/sobjects/Account/describe" autocomplete="off" spellcheck="false">
+            </div>
+          </div>
+
+          <div class="rest-path-builder">
+            <div class="grid four rest-builder-main-row">
+              <div class="field">
+                <label for="path-base" data-i18n="rest.path">Path</label>
+                <input id="path-base" type="text" value="/services/data/" autocomplete="off" spellcheck="false">
+              </div>
+              <div class="field">
+                <label for="api-version" data-i18n="rest.version">Version</label>
+                <input id="api-version" type="text" value="v66.0" autocomplete="off">
+              </div>
+              <div class="field">
+                <label for="path-template" data-i18n="rest.suggestPath">Suggest Path</label>
+                <select id="path-template"></select>
+              </div>
+              <div class="field" id="builder-input1-field">
+                <label for="builder-input1" data-i18n="rest.input1">Input 1</label>
+                <input id="builder-input1" type="text" autocomplete="off">
+              </div>
+            </div>
+            <div class="grid two rest-builder-inputs">
+              <div class="field" id="builder-input2-field">
+                <label for="builder-input2" data-i18n="rest.input2">Input 2</label>
+                <input id="builder-input2" type="text" autocomplete="off">
+              </div>
+              <div class="field" id="builder-input3-field">
+                <label for="builder-input3" data-i18n="rest.input3">Input 3</label>
+                <input id="builder-input3" type="text" autocomplete="off">
+              </div>
+            </div>
+            <datalist id="builder-sobject-options"></datalist>
+            <datalist id="builder-tooling-options"></datalist>
+          </div>
+
+          <div class="field">
+            <label for="body" data-i18n="rest.requestBody">Request Body</label>
+            <textarea id="body" rows="10">{}</textarea>
+          </div>
+
+          <div class="toolbar">
+            <button type="button" id="send-request" data-i18n="rest.sendRequest">Send Request</button>
+            <button type="button" id="sample-body" class="secondary" data-i18n="rest.sampleRequestBody">Sample Request Body</button>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2 data-i18n="rest.response">Response</h2>
+          <div class="results">
+            <pre id="response">Send a request to view the response.</pre>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="tools-nav.js"></script>
+    <script type="module" src="rest-explorer.js"></script>
+  </body>
+</html>

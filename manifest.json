@@ -1,0 +1,87 @@
+{
+  "manifest_version": 3,
+  "name": "Admin Toolkit for Salesforce",
+  "version": "0.10.0",
+  "description": "Salesforce admin toolkit for metadata, SOQL, org review, permissions, APIs, Apex, exports, and monitoring.",
+  "icons": {
+    "16": "icon-16.png",
+    "32": "icon-32.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  },
+  "permissions": [
+    "cookies",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://*.salesforce.com/*",
+    "https://*.salesforce-setup.com/*",
+    "https://*.force.com/*",
+    "https://*.vf.force.com/*",
+    "https://*.lightning.force.com/*",
+    "https://*.visualforce.com/*",
+    "https://*.cloudforce.com/*",
+    "https://*.my.site.com/*",
+    "https://*.salesforce-sites.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Admin Toolkit for Salesforce",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon-16.png",
+      "32": "icon-32.png",
+      "48": "icon-48.png",
+      "128": "icon-128.png"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "shared.css",
+        "org-safety.js",
+        "operation-history.js",
+        "i18n.js",
+        "data-export.html",
+        "document-folders.html",
+        "event-logs.html",
+        "latest-api-usage.html",
+        "login-history.html",
+        "manual.html",
+        "object-schema.html",
+        "object-schema.js",
+        "permission-explorer.html",
+        "permission-explorer.js",
+        "permission-access.js",
+        "rest-explorer.html",
+        "run-apex.html",
+        "setup-audit-trail.html",
+        "schema-viewer.html",
+        "schema-map.js",
+        "tools.html",
+        "tools-nav.js",
+        "ui-messages.js",
+        "logo.svg",
+        "force-sheet.html",
+        "force-sheet.js",
+        "force-sheet.css",
+        "force-sheet-univer.bundle.js",
+        "force-sheet-univer.bundle.css"
+      ],
+      "matches": [
+        "https://*.salesforce.com/*",
+        "https://*.salesforce-setup.com/*",
+        "https://*.force.com/*",
+        "https://*.vf.force.com/*",
+        "https://*.lightning.force.com/*",
+        "https://*.visualforce.com/*",
+        "https://*.cloudforce.com/*",
+        "https://*.my.site.com/*",
+        "https://*.salesforce-sites.com/*"
+      ]
+    }
+  ]
+}

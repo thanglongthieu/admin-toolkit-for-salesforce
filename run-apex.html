@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="icon-32.png">
+    <title>Run Apex Code</title>
+    <link rel="stylesheet" href="shared.css">
+  </head>
+  <body>
+    <main class="shell schema-shell">
+      <div class="card">
+        <section class="hero">
+          <div class="eyebrow" data-i18n="app.title">Admin Toolkit for Salesforce</div>
+          <div id="status" class="status">Waiting for Salesforce session...</div>
+        </section>
+        <section class="section">
+          <div class="field">
+            <label for="apex-code" data-i18n="runApex.executeAnonymous">Execute Anonymous Apex</label>
+            <textarea id="apex-code" rows="14" spellcheck="false">System.debug('Hello from Admin Toolkit for Salesforce');</textarea>
+          </div>
+          <div class="button-row">
+            <button type="button" id="run-apex" data-i18n="runApex.run">Run</button>
+          </div>
+          <pre id="apex-output" class="schema-api-usage-json"></pre>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="tools-nav.js"></script>
+    <script type="module" src="run-apex.js"></script>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="icon-32.png">
+    <title>Manual</title>
+    <link rel="stylesheet" href="shared.css">
+  </head>
+  <body>
+    <main class="shell schema-shell manual-shell">
+      <div class="card">
+        <section class="hero">
+          <div class="eyebrow" data-i18n="app.title">Admin Toolkit for Salesforce</div>
+          <h1 class="title" data-i18n="tools.manual">Manual</h1>
+          <div id="manual-status" class="status">Loading manual...</div>
+        </section>
+
+        <section class="section manual-section">
+          <div class="manual-workbench">
+            <aside class="manual-sidebar" aria-label="Manual folder tree">
+              <div class="schema-sidebar-panel-head" data-i18n="tools.manual">Manual</div>
+              <div id="manual-tree" class="schema-tree schema-tree-full manual-tree"></div>
+            </aside>
+            <section id="manual-detail" class="manual-detail-panel" aria-live="polite"></section>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="tools-nav.js"></script>
+    <script type="module" src="manual.js"></script>
+  </body>
+</html>
