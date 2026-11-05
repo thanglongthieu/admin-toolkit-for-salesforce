@@ -631,6 +631,21 @@ Monitoring ページは Salesforce から設定情報と利用状況を直接読
 
 const VERSION_FILES_EN = [
   {
+    name: "v0.11.1.md",
+    path: "versions/v0.11.1.md",
+    title: "0.11.1",
+    content: `# 0.11.1
+
+Released: 2026-11-05
+
+## Security
+
+- A Salesforce session is now sent only to its own org's hosts. Before, a host whose name merely ended with another org's name (for example evilacme.my.salesforce.com for acme.my.salesforce.com) was offered that org's session.
+- Extension pages are no longer web-accessible, so Salesforce-hosted sites can no longer embed or open them. The popup opens every app and tool as before.
+- No browser permission, host permission, telemetry, analytics, remote code, or developer-operated backend was added in this release.
+`
+  },
+  {
     name: "v0.11.0.md",
     path: "versions/v0.11.0.md",
     title: "0.11.0",
@@ -907,6 +922,21 @@ Released: 2026-06-29
 ];
 
 const VERSION_FILES_JP = [
+  {
+    name: "v0.11.1.md",
+    path: "versions/v0.11.1.md",
+    title: "0.11.1",
+    content: `# 0.11.1
+
+リリース日: 2026-11-05
+
+## セキュリティ
+
+- Salesforce のセッションは、その組織自身のホストにだけ送られるようになりました。以前は、名前の末尾が別の組織名と一致するだけのホスト（例: acme.my.salesforce.com に対する evilacme.my.salesforce.com）にも、その組織のセッションが渡されることがありました。
+- 拡張機能のページを web accessible にしないようにしたため、Salesforce 上でホストされたサイトから埋め込んだり開いたりできなくなりました。ポップアップからは、これまでどおりすべてのアプリとツールを開けます。
+- このリリースでは、ブラウザ権限、ホスト権限、テレメトリ、アナリティクス、リモートコード、開発者が運用するバックエンドは追加していません。
+`
+  },
   {
     name: "v0.11.0.md",
     path: "versions/v0.11.0.md",

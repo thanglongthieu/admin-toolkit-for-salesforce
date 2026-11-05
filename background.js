@@ -241,7 +241,9 @@ async function getSessionForUrl(urlString) {
   const cookieHostCandidates = uniqueValues([...apiHostCandidates, url.hostname]);
 
   const exactDomainMatch = (host, cookie) => host === cookie.domain.replace(/^\./, "");
-  const suffixDomainMatch = (host, cookie) => host.endsWith(cookie.domain.replace(/^\./, ""));
+  // Match only on a label boundary: "evilacme.my.salesforce.com" must not
+  // pick up the sid of "acme.my.salesforce.com".
+  const suffixDomainMatch = (host, cookie) => host.endsWith(`.${cookie.domain.replace(/^\./, "")}`);
   const findCookiesForHost = (host) => cookieCandidates.filter((cookie) => (
     exactDomainMatch(host, cookie) || suffixDomainMatch(host, cookie)
   ));
